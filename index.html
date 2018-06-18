@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="shortcut icon" href="ico.ico" />
+  <title>Ultimate Fighter Picker</title>
+<style>
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-height: 100%;
+  max-width: 100%;
+}
+
+#hdr {
+  flex: 1 1;
+  text-align: center;
+  min-width: 100px;
+}
+#share {
+  flex: 1 1;
+  overflow: hidden;
+  min-width: 100px;
+}
+#url {
+  width: 100%;
+  overflow: auto;
+}
+#grid {
+  width: calc(100vmin - 20px);
+  height: 100vmin;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-gap: 2px;
+  padding: 0;
+  flex: 0 0 auto;
+  margin: 0 10px;
+}
+
+img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.img-cont {
+  overflow: visible;
+  position: relative;
+}
+.img-cont::before {
+  border-radius: 50%;
+  border: 8px solid transparent;
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.img-cont.sel::before {
+  border-color: red;
+}
+
+body {
+  flex-flow: row wrap;
+}
+</style>
+</head>
+
+<body>
+  <div id="hdr"><h1>Pick your fighters!</h1></div>
+  <div id="grid">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mario.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/luigi.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/peach.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/daisy.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/bowser.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/dr_mario.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/rosalina_and_luma.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/bowser_jr.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/donkey_kong.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/diddy_kong.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/link.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/sheik.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/zelda.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/young_link.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ganondorf.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/toon_link.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/samus.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/zero_suit_samus.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ridley.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/yoshi.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/kirby.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/meta_knight.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/king_dedede.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/fox.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/falco.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/wolf.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/pikachu.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/jigglypuff.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/pichu.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mewtwo.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/pokemon_trainer.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/lucario.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/greninja.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ness.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/lucas.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/captain_falcon.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ice_climbers.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/marth.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/lucina.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/roy.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ike.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/robin.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/corrin.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mr_game_and_watch.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/pit.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/dark_pit.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/palutena.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/wario.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/snake.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/sonic.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/olimar.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/rob.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/villager.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mega_man.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/wii_fit_trainer.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/little_mac.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mii_fighter.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/pac_man.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/shulk.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/duck_hunt.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ryu.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/cloud.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/bayonetta.png" alt="">
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/inkling.png" alt="">
+  </div>
+  <div id="share"><button id="shbtn">Share</button><pre id="url"></pre></div>
+
+<script>
+const grid = document.getElementById('grid');
+const urlOut = document.getElementById('url');
+const shareButton = document.getElementById('shbtn');
+const active = new Set();
+
+function getAncestorWithParent(descendent, parent) {
+  let ancestor = descendent;
+  let ancParent = ancestor.parentElement;
+  while (ancParent !== parent) {
+    if (ancParent === null) return null;
+    ancestor = ancParent;
+    ancParent = ancestor.parentElement;
+  }
+  return ancestor;
+}
+function getIndexInParent(elem) {
+  let i = 0;
+  for (let s = elem.previousElementSibling; s !== null; s = s.previousElementSibling) ++i;
+  return i;
+}
+
+const sel = (e)=>{
+  let imgC = e.target;
+  while (!imgC.classList.contains('img-cont')) {
+    if (imgC === grid || imgC === null) return;
+    imgC = imgC.parentElement;
+  }
+  const added = imgC.classList.toggle('sel');
+  const index = getIndexInParent(getAncestorWithParent(imgC, grid));
+  if (added) active.add(index);
+  else active.delete(index);
+  const loc = window.location;
+  const query = Array.from(active.keys()).sort((a,b)=>a-b).join('-');
+  urlOut.innerHTML = loc.href.replace(loc.search, '') +'?' +  query;
+};
+grid.addEventListener('mousedown', sel);
+grid.addEventListener('keypress', (e)=>{
+  if (e.key === 'Enter' || e.key === ' ') sel(e);
+});
+
+
+const canAutoCopy = (
+  document.queryCommandSupported !== undefined &&
+  document.queryCommandSupported('copy')
+);
+let returnTextTimeout;
+if (!canAutoCopy) {
+  copyButton.innerHTML = 'Click and press <kbd>ctrl+c</kbd> to share!';
+}
+const origText = shareButton.innerHTML;
+shareButton.addEventListener('click', (e)=>{
+  const range = document.createRange();
+  range.selectNodeContents(urlOut);
+  const selection = window.getSelection();
+  selection.removeAllRanges();
+  selection.addRange(range);
+
+  if (canAutoCopy) {
+    document.execCommand('copy');
+    shareButton.innerText = "Copied!";
+    if (returnTextTimeout !== undefined) {
+      window.clearTimeout(returnTextTimeout);
+    }
+    returnTextTimeout = window.setTimeout(function() {
+      shareButton.innerText = origText;
+    }, 1000);
+  }
+}, false);
+
+for (let i = 0, len = grid.children.length; i < len; ++i) {
+  const img = grid.children[i]
+  img.tabIndex = '0';
+  const wrapper = document.createElement('div');
+  wrapper.classList.add('img-cont');
+  img.parentNode.insertBefore(wrapper, img.nextSibling);
+  wrapper.appendChild(img);
+}
+
+window.addEventListener('load', (e)=>{
+  const query = window.location.search;
+  if (!query) return;
+  const shActive = query
+    .substr(1)
+    .split('-')
+    .map(Number);
+  for (const i of shActive) {
+    active.add(i);
+    grid.children[i].classList.add('sel');
+  }
+})
+</script>
+</body>
+
+</html>
