@@ -163,8 +163,13 @@ function writeQuery() {
   totalQueryData._.push(...queryData._.slice(modifiedQueryData._.length));
 
   for (const key of Object.keys(totalQueryData).sort()) {
-    if (key === '_') newQueries.push(...totalQueryData._);
-    else newQueries.push(`${key}=${totalQueryData[key]}`);
+    if (key === '_') {
+      /* Filter out empty, null, or undefined data: */
+      const keylessData = totalQueryData._.filter(s=>!!s);
+      newQueries.push(...keylessData);
+    } else {
+      newQueries.push(`${key}=${totalQueryData[key]}`);
+    }
   }
   if (newQueries.length === 0) return base;
   const newQueryStr = newQueries.join('&');
