@@ -16,17 +16,20 @@ body {
   align-items: center;
   max-height: 100%;
   max-width: 100%;
+  padding: 10px;
 }
 
 #hdr {
   flex: 1 1;
   text-align: center;
-  min-width: 100px;
+  min-width: 150px;
+  overflow: auto;
+  word-break: break-all;
 }
 #share {
   flex: 1 1;
   overflow: hidden;
-  min-width: 100px;
+  min-width: 150px;
 }
 #url {
   width: 100%;
@@ -34,7 +37,7 @@ body {
 }
 #grid {
   width: calc(100vmin - 20px);
-  height: 100vmin;
+  height: calc(100vmin - 20px);
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-gap: 2px;
@@ -73,7 +76,7 @@ body {
 </head>
 
 <body>
-  <div id="hdr"><h1>Pick your fighters!</h1></div>
+  <div id="hdr"><h1>Choose your fighters!</h1></div>
   <div id="grid">
     <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mario.png" alt="">
     <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/luigi.png" alt="">
@@ -148,6 +151,51 @@ const urlOut = document.getElementById('url');
 const shareButton = document.getElementById('shbtn');
 const active = new Set();
 
+const queryData = {_: []};
+const modifiedQueryData = {_: []};
+function writeQuery() {
+  const loc = window.location;
+  const base = loc.href.replace(loc.search, '');
+  const newQueries = [];
+
+  /* Copy info from the original query data and the data modified in-session: */
+  const totalQueryData = Object.assign({}, queryData, modifiedQueryData);
+  totalQueryData._.push(...queryData._.slice(modifiedQueryData._.length));
+
+  for (const key of Object.keys(totalQueryData)) {
+    if (key === '_') newQueries.push(...totalQueryData._);
+    else newQueries.push(`${key}=${totalQueryData[key]}`);
+  }
+  if (newQueries.length === 0) return base;
+  else return `${base}?${newQueries.join('&')}`;
+}
+window.addEventListener('load', (e)=>{
+  const queryStr = window.location.search;
+  const queries = queryStr.substr(1).split('&');
+  for (const kv of queries) {
+    const [k, v] = kv.split('=');
+    if (!v) queryData._.push(k);
+    else queryData[k] = v;
+  }
+
+  urlOut.innerHTML = writeQuery();
+
+  /* Execute query string settings: */
+  const querySelection = queryData._[0]
+  if (querySelection) {
+    const shActive = querySelection
+    .split('-')
+    .map(Number);
+    for (const i of shActive) {
+      active.add(i);
+      grid.children[i].classList.add('sel');
+    }
+  }
+  if (queryData.title) {
+    document.getElementById('hdr').firstChild.innerHTML = decodeURI(queryData.title);
+  }
+});
+
 function getAncestorWithParent(descendent, parent) {
   let ancestor = descendent;
   let ancParent = ancestor.parentElement;
@@ -174,11 +222,13 @@ const sel = (e)=>{
   const index = getIndexInParent(getAncestorWithParent(imgC, grid));
   if (added) active.add(index);
   else active.delete(index);
-  const loc = window.location;
-  const query = Array.from(active.keys()).sort((a,b)=>a-b).join('-');
-  urlOut.innerHTML = loc.href.replace(loc.search, '') +'?' +  query;
+  modifiedQueryData._[0] = Array.from(active.keys()).join('-');
+  urlOut.innerHTML = writeQuery();
 };
-grid.addEventListener('mousedown', sel);
+grid.addEventListener('mousedown', (e)=>{
+  sel(e);
+  if (e.detail > 1) e.preventDefault();
+});
 grid.addEventListener('keypress', (e)=>{
   if (e.key === 'Enter' || e.key === ' ') sel(e);
 });
@@ -212,6 +262,16 @@ shareButton.addEventListener('click', (e)=>{
   }
 }, false);
 
+const header = document.getElementById('hdr');
+header.addEventListener('mousedown', (e)=>{
+  if (e.detail > 1) header.setAttribute('contentEditable', '');
+});
+header.addEventListener('input', (e)=>{
+  modifiedQueryData.title = encodeURI(header.innerText.trim());
+  urlOut.innerHTML = writeQuery();
+})
+
+/* Wrap all images and make them tab-navigable: */
 for (let i = 0, len = grid.children.length; i < len; ++i) {
   const img = grid.children[i]
   img.tabIndex = '0';
@@ -220,19 +280,6 @@ for (let i = 0, len = grid.children.length; i < len; ++i) {
   img.parentNode.insertBefore(wrapper, img.nextSibling);
   wrapper.appendChild(img);
 }
-
-window.addEventListener('load', (e)=>{
-  const query = window.location.search;
-  if (!query) return;
-  const shActive = query
-    .substr(1)
-    .split('-')
-    .map(Number);
-  for (const i of shActive) {
-    active.add(i);
-    grid.children[i].classList.add('sel');
-  }
-})
 </script>
 </body>
 
