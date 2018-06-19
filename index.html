@@ -162,22 +162,25 @@ function writeQuery() {
   const totalQueryData = Object.assign({}, queryData, modifiedQueryData);
   totalQueryData._.push(...queryData._.slice(modifiedQueryData._.length));
 
-  for (const key of Object.keys(totalQueryData)) {
+  for (const key of Object.keys(totalQueryData).sort()) {
     if (key === '_') newQueries.push(...totalQueryData._);
     else newQueries.push(`${key}=${totalQueryData[key]}`);
   }
   if (newQueries.length === 0) return base;
-  else return `${base}?${newQueries.join('&')}`;
+  const newQuerieStr = newQueries.join('&');
+  if (newQuerieStr.length === 0) return base;
+  else return `${base}?${newQuerieStr}`;
 }
 window.addEventListener('load', (e)=>{
   const queryStr = window.location.search;
-  const queries = queryStr.substr(1).split('&');
-  for (const kv of queries) {
-    const [k, v] = kv.split('=');
-    if (!v) queryData._.push(k);
-    else queryData[k] = v;
+  if (queryStr) {
+    const queries = queryStr.substr(1).split('&');
+    for (const kv of queries) {
+      const [k, v] = kv.split('=');
+      if (!v) queryData._.push(k);
+      else queryData[k] = v;
+    }
   }
-
   urlOut.innerHTML = writeQuery();
 
   /* Execute query string settings: */
@@ -222,7 +225,7 @@ const sel = (e)=>{
   const index = getIndexInParent(getAncestorWithParent(imgC, grid));
   if (added) active.add(index);
   else active.delete(index);
-  modifiedQueryData._[0] = Array.from(active.keys()).join('-');
+  modifiedQueryData._[0] = Array.from(active.keys()).sort().join('-');
   urlOut.innerHTML = writeQuery();
 };
 grid.addEventListener('mousedown', (e)=>{
