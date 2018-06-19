@@ -192,8 +192,8 @@ window.addEventListener('load', (e)=>{
   const querySelection = queryData._[0]
   if (querySelection) {
     const shActive = querySelection
-    .split('-')
-    .map(Number);
+      .split('-')
+      .map(Number);
     for (const i of shActive) {
       active.add(i);
       grid.children[i].classList.add('sel');
@@ -233,7 +233,7 @@ const sel = (e)=>{
 
   const activeIndices = Array.from(active.keys());
   if (activeIndices.length > 0) {
-    modifiedQueryData._[0] = activeIndices.sort().join('-');
+    modifiedQueryData._[0] = activeIndices.sort((a, b)=>a - b).join('-');
   } else {
     modifiedQueryData._[0] = undefined;
   }
