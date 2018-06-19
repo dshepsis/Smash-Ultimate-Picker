@@ -167,9 +167,9 @@ function writeQuery() {
     else newQueries.push(`${key}=${totalQueryData[key]}`);
   }
   if (newQueries.length === 0) return base;
-  const newQuerieStr = newQueries.join('&');
-  if (newQuerieStr.length === 0) return base;
-  else return `${base}?${newQuerieStr}`;
+  const newQueryStr = newQueries.join('&');
+  if (newQueryStr.length === 0) return base;
+  else return `${base}?${newQueryStr}`;
 }
 window.addEventListener('load', (e)=>{
   const queryStr = window.location.search;
@@ -225,7 +225,13 @@ const sel = (e)=>{
   const index = getIndexInParent(getAncestorWithParent(imgC, grid));
   if (added) active.add(index);
   else active.delete(index);
-  modifiedQueryData._[0] = Array.from(active.keys()).sort().join('-');
+
+  const activeIndices = Array.from(active.keys());
+  if (activeIndices.length > 0) {
+    modifiedQueryData._[0] = activeIndices.sort().join('-');
+  } else {
+    modifiedQueryData._[0] = undefined;
+  }
   urlOut.innerHTML = writeQuery();
 };
 grid.addEventListener('mousedown', (e)=>{
