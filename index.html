@@ -10,6 +10,9 @@
   margin: 0;
   box-sizing: border-box;
 }
+html {
+  height: 100%;
+}
 body {
   display: flex;
   justify-content: center;
@@ -37,9 +40,10 @@ body {
 }
 #grid {
   width: calc(100vmin - 20px);
-  height: calc(100vmin - 20px);
+  height: calc(100vmin - 100px);
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(9, 1fr);
   grid-gap: 2px;
   padding: 0;
   flex: 0 0 auto;
@@ -78,70 +82,75 @@ body {
 <body>
   <div id="hdr"><h1>Choose your fighters!</h1></div>
   <div id="grid">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mario.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/luigi.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/peach.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/daisy.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/bowser.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/dr_mario.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/rosalina_and_luma.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/bowser_jr.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/donkey_kong.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/diddy_kong.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/link.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/sheik.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/zelda.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/young_link.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ganondorf.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/toon_link.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/samus.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/zero_suit_samus.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ridley.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/yoshi.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/kirby.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/meta_knight.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/king_dedede.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/fox.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/falco.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/wolf.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/pikachu.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/jigglypuff.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/pichu.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mewtwo.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/pokemon_trainer.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/lucario.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/greninja.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ness.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/lucas.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/captain_falcon.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ice_climbers.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/marth.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/lucina.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/roy.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ike.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/robin.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/corrin.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mr_game_and_watch.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/pit.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/dark_pit.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/palutena.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/wario.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/snake.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/sonic.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/olimar.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/rob.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/villager.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mega_man.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/wii_fit_trainer.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/little_mac.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mii_fighter.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/pac_man.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/shulk.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/duck_hunt.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ryu.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/cloud.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/bayonetta.png" alt="">
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/inkling.png" alt="">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mario.png" alt="mario">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/luigi.png" alt="luigi">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/peach.png" alt="peach">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/daisy.png" alt="daisy">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/bowser.png" alt="bowser">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/dr_mario.png" alt="dr_mario">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/rosalina_and_luma.png" alt="rosalina_and_luma">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/bowser_jr.png" alt="bowser_jr">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/donkey_kong.png" alt="donkey_kong">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/diddy_kong.png" alt="diddy_kong">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/king_k_rool.png" alt="king_k_rool">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/link.png" alt="link">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/sheik.png" alt="sheik">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/zelda.png" alt="zelda">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/young_link.png" alt="young_link">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ganondorf.png" alt="ganondorf">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/toon_link.png" alt="toon_link">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/samus.png" alt="samus">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/dark_samus.png" alt="dark_samus">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/zero_suit_samus.png" alt="zero_suit_samus">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ridley.png" alt="ridley">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/yoshi.png" alt="yoshi">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/kirby.png" alt="kirby">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/meta_knight.png" alt="meta_knight">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/king_dedede.png" alt="king_dedede">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/fox.png" alt="fox">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/falco.png" alt="falco">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/wolf.png" alt="wolf">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/pikachu.png" alt="pikachu">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/jigglypuff.png" alt="jigglypuff">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/pichu.png" alt="pichu">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mewtwo.png" alt="mewtwo">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/pokemon_trainer.png" alt="pokemon_trainer">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/lucario.png" alt="lucario">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/greninja.png" alt="greninja">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ness.png" alt="ness">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/lucas.png" alt="lucas">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/captain_falcon.png" alt="captain_falcon">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ice_climbers.png" alt="ice_climbers">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/marth.png" alt="marth">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/lucina.png" alt="lucina">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/roy.png" alt="roy">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/chrom.png" alt="chrom">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ike.png" alt="ike">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/robin.png" alt="robin">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/corrin.png" alt="corrin">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mr_game_and_watch.png" alt="mr_game_and_watch">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/pit.png" alt="pit">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/dark_pit.png" alt="dark_pit">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/palutena.png" alt="palutena">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/wario.png" alt="wario">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/snake.png" alt="snake">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/sonic.png" alt="sonic">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/olimar.png" alt="olimar">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/rob.png" alt="rob">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/villager.png" alt="villager">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mega_man.png" alt="mega_man">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/wii_fit_trainer.png" alt="wii_fit_trainer">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/little_mac.png" alt="little_mac">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mii_fighter.png" alt="mii_fighter">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/pac_man.png" alt="pac_man">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/shulk.png" alt="shulk">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/duck_hunt.png" alt="duck_hunt">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ryu.png" alt="ryu">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/cloud.png" alt="cloud">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/bayonetta.png" alt="bayonetta">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/inkling.png" alt="inkling">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/simon.png" alt="simon">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/richter.png" alt="richter">
   </div>
   <div id="share"><button id="shbtn">Share</button><pre id="url"></pre></div>
 
