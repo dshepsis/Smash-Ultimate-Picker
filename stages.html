@@ -125,11 +125,16 @@ body {
   outline-color: #c00b;
   filter: none;
 }
-#grid.mouse-mode .img-cont:hover img, #grid.tab-mode .img-cont:focus img{
+#grid.mouse-mode .img-cont:hover img, #grid.tab-mode .img-cont:focus img {
   transform: scale(3, 3);
   z-index: 1;
   filter: none;
 }
+#grid.mouse-mode .img-cont.random:hover img,
+#grid.tab-mode .img-cont.random:focus img {
+  transform: scale(1.5, 1.5);
+}
+
 
 /* Make corners and edges expand into the grid: */
 .img-cont:nth-child(-n+8) img {
