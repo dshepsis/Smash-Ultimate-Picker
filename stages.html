@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="shortcut icon" href="stages.ico" />
+  <title>Ultimate Stage Picker</title>
+<style>
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+html, body {
+  height: 100%;
+}
+body {
+  padding: 15px; /* @global gutter */
+}
+
+#flex-cont {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#grid-bounds {
+  flex: 1 0 auto;
+  overflow: hidden;
+}
+
+/* Center the grid: */
+#grid {
+  left: 0;
+  right: 0;
+  margin: auto;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#hdr, #share {
+  min-width: 100px;
+}
+
+#hdr > h1{
+  text-align: center;
+}
+
+/* Row Layout: */
+#flex-cont {
+  flex-flow: row nowrap;
+}
+#grid-bounds {
+  height: 100%;
+  position: relative;
+}
+#flex-cont > *+* {
+  margin-left: 15px; /* @global gutter */
+}
+#share {
+  width: 300px;
+}
+#grid {
+  max-width: calc(110vh - 40px); /* Fallback for w/o JS: */
+}
+
+/* When the window is too narrow, change to a column layout: */
+@media(max-aspect-ratio: 3/2) {
+  #flex-cont {
+    flex-flow: column nowrap;
+  }
+  #flex-cont > * {
+    margin: 0;
+  }
+  #flex-cont > *+* {
+    margin-top: 15px; /* @global gutter */
+  }
+  #grid-bounds {
+    height: initial;
+    width: 100%;
+  }
+  #share {
+    width: 100%;
+  }
+  #grid {
+    max-width: calc(100vh - 200px); /* Fallback for w/o JS: */
+  }
+}
+
+#shbtn {
+  font-size: 24px;
+  width: 100%;
+}
+#url {
+  overflow-x: scroll;
+  padding: 5px;
+}
+
+/* Grid Styling: */
+#grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  margin: auto;
+  position: absolute; /* The grid is manually sized to the grid-bounds with JS */
+  transition: width .1s;
+}
+
+img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: grayscale(0.9);
+  outline: 4px solid transparent;
+  outline-offset: -5px;
+  transition: transform .1s, outline-color .1s;
+  position: relative;
+}
+img.sel {
+  outline-color: #c00b;
+  filter: none;
+}
+#grid.mouse-mode img:hover, #grid.tab-mode img:focus {
+  transform: scale(2.8, 2.8);
+  z-index: 1;
+  filter: none;
+}
+/* Make corners and edges expand into the grid: */
+img:nth-child(-n+8) {
+  transform-origin: top;
+}
+img:nth-last-child(-n+8) {
+  transform-origin: bottom;
+}
+img:nth-child(8n+1) {
+  transform-origin: left;
+}
+img:nth-child(8n+8) {
+  transform-origin: right;
+}
+img:nth-child(1) {
+  transform-origin: top left;
+}
+img:nth-child(8) {
+  transform-origin: top right;
+}
+img:nth-last-child(8) {
+  transform-origin: bottom left;
+}
+img:nth-last-child(1) {
+  transform-origin: bottom right;
+}
+</style>
+</head>
+
+<body>
+  <div id="flex-cont">
+    <div id="hdr"><h1>Choose your stages!</h1></div>
+    <div id="grid-bounds">
+      <div id="grid" class="mouse-mode">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img1.jpg" alt="Battlefield" title="Battlefield" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img2.jpg" alt="Big Battlefield" title="Big Battlefield" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img3.jpg" alt="Final Destination" title="Final Destination" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img4.jpg" alt="Peach's Castle" title="Peach's Castle" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img5.jpg" alt="Kongo Jungle" title="Kongo Jungle" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img6.jpg" alt="Hyrule Castle" title="Hyrule Castle" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img7.jpg" alt="Super Happy Tree" title="Super Happy Tree" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img8.jpg" alt="Dream Land" title="Dream Land" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img9_en.jpg" alt="Saffron City" title="Saffron City" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img10.jpg" alt="Mushroom Kingdom" title="Mushroom Kingdom" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img11.jpg" alt="Princess Peach's Castle" title="Princess Peach's Castle" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img12.jpg" alt="Rainbow Cruise" title="Rainbow Cruise" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img13.jpg" alt="Kongo Falls" title="Kongo Falls" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img14.jpg" alt="Jungle Japes" title="Jungle Japes" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img15.jpg" alt="Great Bay" title="Great Bay" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img16.jpg" alt="Temple" title="Temple" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img17.jpg" alt="Brinstar" title="Brinstar" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img18.jpg" alt="Yoshi's Island (Melee)" title="Yoshi's Island (Melee)" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img19.jpg" alt="Yoshi's Story" title="Yoshi's Story" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img20.jpg" alt="Fountain of Dreams" title="Fountain of Dreams" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img21.jpg" alt="Green Greens" title="Green Greens" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img22.jpg" alt="Corneria" title="Corneria" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img23.jpg" alt="Venom" title="Venom" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img24.jpg" alt="Pokémon Stadium" title="Pokémon Stadium" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img25.jpg" alt="Onett" title="Onett" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img26.jpg" alt="Mushroom Kingdom II" title="Mushroom Kingdom II" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img27.jpg" alt="Brinstar Depths" title="Brinstar Depths" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img28.jpg" alt="Big Blue" title="Big Blue" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img29.jpg" alt="Fourside" title="Fourside" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img30.jpg" alt="Delfino Plaza" title="Delfino Plaza" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img31.jpg" alt="Mushroomy Kingdom" title="Mushroomy Kingdom" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img32.jpg" alt="Figure-8 Circuit" title="Figure-8 Circuit" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img33.jpg" alt="WarioWare, Inc." title="WarioWare, Inc." tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img34.jpg" alt="Bridge of Eldin" title="Bridge of Eldin" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img35.jpg" alt="Norfair" title="Norfair" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img36.jpg" alt="Frigate Orpheon" title="Frigate Orpheon" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img37.jpg" alt="Yoshi's Island" title="Yoshi's Island" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img38.jpg" alt="Halberd" title="Halberd" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img39.jpg" alt="Lylat Cruise" title="Lylat Cruise" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img40.jpg" alt="Pokémon Stadium 2" title="Pokémon Stadium 2" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img41.jpg" alt="Port Town Aero Dive" title="Port Town Aero Dive" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img42.jpg" alt="Castle Siege" title="Castle Siege" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img43.jpg" alt="Distant Planet" title="Distant Planet" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img44.jpg" alt="Smashville" title="Smashville" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img45.jpg" alt="New Pork City" title="New Pork City" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img46.jpg" alt="Summit" title="Summit" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img47.jpg" alt="Skyworld" title="Skyworld" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img48.jpg" alt="Shadow Moses Island" title="Shadow Moses Island" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img49.jpg" alt="Luigi's Mansion" title="Luigi's Mansion" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img50.jpg" alt="Pirate Ship" title="Pirate Ship" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img51.jpg" alt="Spear Pillar" title="Spear Pillar" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img52.jpg" alt="75 m" title="75 m" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img53.jpg" alt="Mario Bros." title="Mario Bros." tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img54.jpg" alt="Hanenbow" title="Hanenbow" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img55.jpg" alt="Green Hill Zone" title="Green Hill Zone" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img56.jpg" alt="3D Land" title="3D Land" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img57.jpg" alt="Golden Plains" title="Golden Plains" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img58.jpg" alt="Paper Mario" title="Paper Mario" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img59.jpg" alt="Gerudo Valley" title="Gerudo Valley" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img60.jpg" alt="Spirit Train" title="Spirit Train" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img61.jpg" alt="Dream Land GB" title="Dream Land GB" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img62.jpg" alt="Unova Pokémon League" title="Unova Pokémon League" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img63.jpg" alt="Prism Tower" title="Prism Tower" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img64.jpg" alt="Mute City SNES" title="Mute City SNES" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img65.jpg" alt="Magicant" title="Magicant" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img66.jpg" alt="Arena Ferox" title="Arena Ferox" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img67.jpg" alt="Reset Bomb Forest" title="Reset Bomb Forest" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img68.jpg" alt="Tortimer Island" title="Tortimer Island" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img69.jpg" alt="Balloon Fight" title="Balloon Fight" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img70.jpg" alt="Living Room" title="Living Room" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img71.jpg" alt="Find Mii" title="Find Mii" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img72.jpg" alt="Tomodachi Life" title="Tomodachi Life" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img73_en.jpg" alt="PictoChat 2" title="PictoChat 2" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img74.jpg" alt="Mushroom Kingdom U" title="Mushroom Kingdom U" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img75.jpg" alt="Mario Galaxy" title="Mario Galaxy" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img76.jpg" alt="Mario Circuit" title="Mario Circuit" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img77.jpg" alt="Skyloft" title="Skyloft" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img78.jpg" alt="The Great Cave Offensive" title="The Great Cave Offensive" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img79.jpg" alt="Kalos Pokémon League" title="Kalos Pokémon League" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img80.jpg" alt="Coliseum" title="Coliseum" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img81_en.jpg" alt="Flat Zone X" title="Flat Zone X" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img82.jpg" alt="Palutena's Temple" title="Palutena's Temple" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img83.jpg" alt="Gamer" title="Gamer" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img84.jpg" alt="Garden of Hope" title="Garden of Hope" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img85_en.jpg" alt="Town and City" title="Town and City" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img86.jpg" alt="Wii Fit Studio" title="Wii Fit Studio" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img87.jpg" alt="Boxing Ring" title="Boxing Ring" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img88.jpg" alt="Gaur Plain" title="Gaur Plain" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img89.jpg" alt="Duck Hunt" title="Duck Hunt" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img90.jpg" alt="Wrecking Crew" title="Wrecking Crew" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img91.jpg" alt="Pilotwings" title="Pilotwings" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img92.jpg" alt="Wuhu Island" title="Wuhu Island" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img93.jpg" alt="Windy Hill Zone" title="Windy Hill Zone" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img94.jpg" alt="Wily Castle" title="Wily Castle" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img95.jpg" alt="PAC-LAND" title="PAC-LAND" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img96.jpg" alt="Super Mario Maker" title="Super Mario Maker" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img97.jpg" alt="Suzaku Castle" title="Suzaku Castle" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img98.jpg" alt="Midgar" title="Midgar" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img99.jpg" alt="Umbra Clock Tower" title="Umbra Clock Tower" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img100.jpg" alt="New Donk City Hall" title="New Donk City Hall" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img101.jpg" alt="Great Plateau Tower" title="Great Plateau Tower" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img102.jpg" alt="Moray Towers" title="Moray Towers" tabindex="0">
+    		<img src="https://www.smashbros.com/assets_v2/img/stage/stage_img103.jpg" alt="Dracula's Castle" title="Dracula's Castle" tabindex="0">
+    		<img src="random_stage.png" class="random" alt="Random" title="Random" tabindex="0">
+      </div>
+    </div>
+    <div id="share"><button id="shbtn">Share</button><pre id="url"></pre></div>
+  </div>
+
+<script>
+const getId = id => document.getElementById(id);
+
+const flexCont = getId('flex-cont');
+const header = getId('hdr');
+const grid = getId('grid');
+const urlOut = getId('url');
+const shareButton = getId('shbtn');
+const active = new Set();
+
+const queryData = {_: []};
+const modifiedQueryData = {_: []};
+function writeQuery() {
+  const loc = window.location;
+  const base = loc.href.replace(loc.search, '');
+  const newQueries = [];
+
+  /* Copy info from the original query data and the data modified in-session: */
+  const totalQueryData = Object.assign({}, queryData, modifiedQueryData);
+  totalQueryData._.push(...queryData._.slice(modifiedQueryData._.length));
+
+  for (const key of Object.keys(totalQueryData).sort()) {
+    if (key === '_') {
+      /* Filter out empty, null, or undefined data: */
+      const keylessData = totalQueryData._.filter(s=>!!s);
+      newQueries.push(...keylessData);
+    } else {
+      newQueries.push(`${key}=${totalQueryData[key]}`);
+    }
+  }
+  if (newQueries.length === 0) return base;
+  const newQueryStr = newQueries.join('&');
+  if (newQueryStr.length === 0) return base;
+  else return `${base}?${newQueryStr}`;
+}
+window.addEventListener('load', (e)=>{
+  const queryStr = window.location.search;
+  if (queryStr) {
+    const queries = queryStr.substr(1).split('&');
+    for (const kv of queries) {
+      const [k, v] = kv.split('=');
+      if (!v) queryData._.push(k);
+      else queryData[k] = v;
+    }
+  }
+  urlOut.innerHTML = writeQuery();
+
+  /* Execute query string settings: */
+  const querySelection = queryData._[0]
+  if (querySelection) {
+    const shActive = querySelection
+      .split('-')
+      .map(Number);
+    for (const i of shActive) {
+      active.add(i);
+      grid.children[i].classList.add('sel');
+    }
+  }
+  if (queryData.title) {
+    getId('hdr').firstChild.innerHTML = decodeURI(queryData.title);
+  }
+});
+
+function getAncestorWithParent(descendent, parent) {
+  let ancestor = descendent;
+  let ancParent = ancestor.parentElement;
+  while (ancParent !== parent) {
+    if (ancParent === null) return null;
+    ancestor = ancParent;
+    ancParent = ancestor.parentElement;
+  }
+  return ancestor;
+}
+function getIndexInParent(elem) {
+  let i = 0;
+  const prev = e => e.previousElementSibling;
+  for (let s = prev(elem); s !== null; s = prev(s)) ++i;
+  return i;
+}
+
+const sel = (e)=>{
+  let img = e.target;
+  while (img.tagName.toUpperCase() !== 'IMG') {
+    if (img === grid || img === null) return;
+    img = img.parentElement;
+  }
+  if (img.classList.contains('random')) {
+    const children = document.getElementsByTagName('IMG', grid);
+    const randChild = children[Math.floor(Math.random() * children.length)];
+    sel({target: randChild});
+    return;
+  }
+  const added = img.classList.toggle('sel');
+  const index = getIndexInParent(getAncestorWithParent(img, grid));
+  if (added) active.add(index);
+  else active.delete(index);
+
+  const activeIndices = Array.from(active.keys());
+  if (activeIndices.length > 0) {
+    modifiedQueryData._[0] = activeIndices.sort((a, b)=>a - b).join('-');
+  } else {
+    modifiedQueryData._[0] = undefined;
+  }
+  urlOut.innerHTML = writeQuery();
+};
+grid.addEventListener('mousedown', (e)=>{
+  grid.classList.remove('tab-mode');
+  grid.classList.add('mouse-mode');
+  sel(e);
+  if (e.detail > 1) e.preventDefault();
+});
+grid.addEventListener('keypress', (e)=>{
+  if (e.key === 'Enter' || e.key === ' ') sel(e);
+  // if (e.key === 'Arrow')
+});
+document.addEventListener('keydown', (e)=>{
+  if (e.key === 'Tab') {
+    grid.classList.remove('mouse-mode');
+    grid.classList.add('tab-mode');
+  }
+})
+
+
+const canAutoCopy = (
+  document.queryCommandSupported !== undefined &&
+  document.queryCommandSupported('copy')
+);
+let returnTextTimeout;
+if (!canAutoCopy) {
+  copyButton.innerHTML = 'Click and press <kbd>ctrl+c</kbd> to share!';
+}
+const origText = shareButton.innerHTML;
+shareButton.addEventListener('click', (e)=>{
+  const range = document.createRange();
+  range.selectNodeContents(urlOut);
+  const selection = window.getSelection();
+  selection.removeAllRanges();
+  selection.addRange(range);
+
+  if (canAutoCopy) {
+    document.execCommand('copy');
+    shareButton.innerText = "Copied!";
+    if (returnTextTimeout !== undefined) {
+      window.clearTimeout(returnTextTimeout);
+    }
+    returnTextTimeout = window.setTimeout(function() {
+      shareButton.innerText = origText;
+    }, 1000);
+  }
+}, false);
+
+header.addEventListener('mousedown', (e)=>{
+  if (e.detail > 1) header.setAttribute('contentEditable', '');
+});
+header.addEventListener('input', (e)=>{
+  modifiedQueryData.title = encodeURI(header.innerText.trim());
+  urlOut.innerHTML = writeQuery();
+});
+
+/* Resizing: */
+grid.style.maxWidth = 'initial'; //Remove CSS-only fallback
+const imgWidth = 750; //px
+const imgHeight = 421; //px
+const gridCols = 8;
+const gridRows = 13;
+const gridWidthOverHeight = (imgWidth * gridCols) / (imgHeight * gridRows);
+const gridBounds = getId('grid-bounds');
+function sizeGrid() {
+  /* Immediately remove maxWidth and maxHeight to let bounds maximize */
+  gridBounds.style.maxWidth = 'initial';
+  gridBounds.style.minWidth = 'initial';
+  gridBounds.style.maxHeight = 'initial';
+
+  let gridBoundStyles = getComputedStyle(gridBounds);
+  let boundWidth = parseFloat(gridBoundStyles.width);
+  let boundHeight = parseFloat(gridBoundStyles.height);
+  const flexContStyles = getComputedStyle(flexCont);
+  if (flexContStyles.flexDirection === 'column') {
+    /* If we are in column mode: */
+    gridBounds.style.maxHeight = boundWidth / gridWidthOverHeight + 'px';
+  } else {
+    /* If we are in row mode: */
+    const width = boundHeight * gridWidthOverHeight + 'px';
+    gridBounds.style.maxWidth = width;
+    /* Set min-width in row mode so that the grid-bounds can shrink the other
+     * flex items to make more room: */
+    gridBounds.style.minWidth = width;
+  }
+  /* Refresh styles after above changes: */
+  gridBoundStyles = getComputedStyle(gridBounds);
+  boundWidth = parseFloat(gridBoundStyles.width);
+  boundHeight = parseFloat(gridBoundStyles.height);
+  const boundMin = Math.min(
+    boundHeight * gridWidthOverHeight,
+    boundWidth
+  );
+  console.log(boundWidth, boundHeight);
+  console.log(`Min: ${boundMin}`);
+  grid.style.width = boundMin + 'px'
+}
+const RAFSizeGrid = ()=>requestAnimationFrame(sizeGrid);
+window.addEventListener('load', RAFSizeGrid, false);
+
+function throttle(fn, timeBetweenCalls, queue1Call) {
+  let blocked = false, queuedArgs = null;
+  return function limitedFn(...args) {
+    const context = this;
+    queuedArgs = (queue1Call && blocked) ? args : null;
+    if (blocked) return;
+    blocked = true;
+    const onTimeout = ()=>{
+      blocked = false;
+      if (queue1Call && queuedArgs !== null) {
+        limitedFn.apply(context, queuedArgs);
+      }
+    };
+    window.setTimeout(onTimeout, timeBetweenCalls);
+
+    /* Call the function with apply, to preserve
+     * context for things like prototype functions: */
+    fn.apply(context, args);
+  };
+}
+
+const throttleResize = throttle(RAFSizeGrid, 200, true);
+window.addEventListener('resize', throttleResize);
+</script>
+</body>
+
+</html>
