@@ -114,7 +114,7 @@ body {
 .img-cont::before {
   content: "";
   position: absolute;
-  top: 0; left: 0; bottom: 0; right: 0;
+  top: 0.5px; left: 0.5px; bottom: 0.5px; right: 0.5px;
   z-index: 2;
 }
 .img-cont:hover::before {
@@ -175,10 +175,23 @@ body {
   transform-origin: bottom right;
 }
 
-/* @debug */
-#overlay {
-  position: absolute;
-  top: 0; right: 0; bottom: 0; left: 0;
+/* Links styling: */
+#share {
+  font-size: 24px;
+}
+#share p, #share ul {
+  margin: 10px 0;
+  font-family: sans-serif;
+}
+#share ul {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+
+}
+#share ul > li:not(:last-child) {
+  margin-bottom: 5px;
+  margin-right: 3em;
 }
 </style>
 </head>
@@ -294,7 +307,15 @@ body {
     		<div class="img-cont random" tabindex="0"><img src="random_stage.png" alt="Random" title="Random"/></div>
       </div>
     </div>
-    <div id="share"><button id="shbtn">Share</button><pre id="url"></pre></div>
+    <div id="share">
+      <button id="shbtn">Share</button>
+      <pre id="url"></pre>
+      <ul>
+        <li><a href="/">Character Picker</a></li>
+        <li><a href="https://github.com/dshepsis/Smash-Ultimate-Picker">Github Repo</a></li>
+        <li><a href="https://twitter.com/SSB_Auride">My Twitter</a></li>
+      </ul>
+    </div>
   </div>
 
 <script>
