@@ -132,6 +132,7 @@ body {
   filter: grayscale(0.9) brightness(0.5);
   outline: 4px solid transparent;
   outline-offset: -5px;
+  will-change: transform;
   transition: transform .1s, outline-color .1s;
 }
 .img-cont.sel img {
@@ -335,7 +336,7 @@ const queryData = {_: []};
 const modifiedQueryData = {_: []};
 function writeQuery() {
   const loc = window.location;
-  const base = loc.href.replace(loc.search, '');
+  const base = loc.origin + loc.pathname;
   const newQueries = [];
 
   /* Copy info from the original query data and the data modified in-session: */
@@ -351,10 +352,9 @@ function writeQuery() {
       newQueries.push(`${key}=${totalQueryData[key]}`);
     }
   }
-  if (newQueries.length === 0) return base;
+  if (newQueries.length === 0) return base + loc.hash;
   const newQueryStr = newQueries.join('&');
-  if (newQueryStr.length === 0) return base;
-  else return `${base}?${newQueryStr}`;
+  return `${base}?${newQueryStr}${loc.hash}`;
 }
 window.addEventListener('load', (e)=>{
   const queryStr = window.location.search;
@@ -369,7 +369,7 @@ window.addEventListener('load', (e)=>{
   urlOut.innerHTML = writeQuery();
 
   /* Execute query string settings: */
-  const querySelection = queryData._[0]
+  const querySelection = queryData.sel1;
   if (querySelection) {
     const shActive = querySelection
       .split('-')
@@ -403,7 +403,6 @@ function getIndexInParent(elem) {
 
 const sel = (e)=>{
   let imgC = e.target;
-  console.log(e.target);
   while (imgC.parentElement !== grid) {
     if (imgC === grid || imgC === null) return;
     imgC = imgC.parentElement;
@@ -419,11 +418,12 @@ const sel = (e)=>{
   if (added) active.add(index);
   else active.delete(index);
 
+  /* Make a query string representing the selected indices in the grid: */
   const activeIndices = Array.from(active.keys());
   if (activeIndices.length > 0) {
-    modifiedQueryData._[0] = activeIndices.sort((a, b)=>a - b).join('-');
+    modifiedQueryData.sel1 = activeIndices.sort((a, b)=>a - b).join('-');
   } else {
-    modifiedQueryData._[0] = undefined;
+    modifiedQueryData.sel1 = undefined;
   }
   urlOut.innerHTML = writeQuery();
 };
@@ -490,7 +490,7 @@ const gridRows = 13;
 const gridWidthOverHeight = (imgWidth * gridCols) / (imgHeight * gridRows);
 const gridBounds = getId('grid-bounds');
 function sizeGrid() {
-  /* Immediately remove maxWidth and maxHeight to let bounds maximize */
+  /* Immediately remove min/maxWidth and maxHeight to let bounds resize: */
   gridBounds.style.maxWidth = 'initial';
   gridBounds.style.minWidth = 'initial';
   gridBounds.style.maxHeight = 'initial';
@@ -501,10 +501,10 @@ function sizeGrid() {
   const flexContStyles = getComputedStyle(flexCont);
   if (flexContStyles.flexDirection === 'column') {
     /* If we are in column mode: */
-    gridBounds.style.maxHeight = boundWidth / gridWidthOverHeight + 'px';
+    gridBounds.style.maxHeight = `${boundWidth / gridWidthOverHeight}px`;
   } else {
     /* If we are in row mode: */
-    const width = boundHeight * gridWidthOverHeight + 'px';
+    const width = `${boundHeight * gridWidthOverHeight}px`;
     gridBounds.style.maxWidth = width;
     /* Set min-width in row mode so that the grid-bounds can shrink the other
      * flex items to make more room: */
@@ -518,9 +518,7 @@ function sizeGrid() {
     boundHeight * gridWidthOverHeight,
     boundWidth
   );
-  console.log(boundWidth, boundHeight);
-  console.log(`Min: ${boundMin}`);
-  grid.style.width = boundMin + 'px'
+  grid.style.width = `${boundMin}px`;
 }
 const RAFSizeGrid = ()=>requestAnimationFrame(sizeGrid);
 window.addEventListener('load', RAFSizeGrid, false);
