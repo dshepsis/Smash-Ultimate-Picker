@@ -62,6 +62,7 @@ img {
   border: 8px solid transparent;
   content: "";
   position: absolute;
+  z-index: -1;
   top: 0;
   bottom: 0;
   left: 0;
@@ -81,8 +82,7 @@ img {
   width: 100%;
   height: auto;
   display: block;
-  filter: grayscale(1) contrast(200%);
-  opacity: 0.7;
+  filter: grayscale(1) contrast(200%) opacity(0.7);
 }
 #grid {
   width: 100%;
@@ -92,8 +92,8 @@ img {
 }
 
 input, #randomize {
-  margin-top: 15px;
-  font-size: 24px;
+  margin-top: 10px;
+  font-size: 20px;
   display: block;
   width: 500px;
 }
@@ -180,6 +180,10 @@ input, #randomize {
   <button id="randomize">Randomize</button>
   <input id="bg-color" placeholder="Background color" type='text' />
   <input id="circle-color" placeholder="Circle color" type='text' />
+  <input id="image-filter" placeholder="Image filter" type='text' />
+  <input id="sel-filter" placeholder="Selected filter" type='text' />
+
+
 
   <style id="pseudo-style"></style>
 <script>
@@ -342,18 +346,46 @@ randButton.addEventListener('click', ()=>{
   }
 });
 
+const pseudoStyle = document.getElementById('pseudo-style');
+const setExtraStyle = (()=>{
+  const styles = {};
+  return (label, rule)=>{
+    styles[label] = rule;
+    pseudoStyle.innerHTML = Object.entries(styles).map(([label, rule])=>{
+      return `/* ${label} */\n${rule}`
+    }).join('\n');
+  }
+})();
+const styleOnInput = (label, rule)=>{
+  return e => {
+    const sanitizedVal = /^[^\n;{}]*/.exec(e.target.value)[0];
+    setExtraStyle(label, rule(sanitizedVal));
+  }
+}
+
 const bgColor = document.getElementById('bg-color');
-bgColor.addEventListener('input', ()=>{
-  const color = /^[^\n;{}]+/.exec(bgColor.value)[0];
-  document.body.style.background = color;
-});
+bgColor.addEventListener('input', styleOnInput(
+  "Background Color",
+  color => `body {background: ${color};}`
+));
 
 const circleColor = document.getElementById('circle-color');
-const pseudoStyle = document.getElementById('pseudo-style');
-circleColor.addEventListener('input', ()=>{
-  const color = /^[^\n;{}]+/.exec(circleColor.value)[0];
-  pseudoStyle.innerHTML = `.img-cont.sel::before {border-color: ${color};}`;
-});
+circleColor.addEventListener('input', styleOnInput(
+  "Circle Color",
+  color => `.img-cont.sel::before {border-color: ${color};}`
+));
+
+const imageFilter = document.getElementById('image-filter');
+imageFilter.addEventListener('input', styleOnInput(
+  "Image Filter",
+  filter => `img {filter: ${filter};}`
+));
+const selFilter = document.getElementById('sel-filter');
+selFilter.addEventListener('input', styleOnInput(
+  "Selected Filter",
+  filter => `.img-cont.sel img {filter: ${filter};}`
+));
+
 
 </script>
 </body>
