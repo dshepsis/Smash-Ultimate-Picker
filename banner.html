@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="shortcut icon" href="ico.ico" />
+  <title>Ultimate Fighter Picker</title>
+<style>
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+html {
+  height: 100%;
+}
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* max-height: 100%; */
+  max-width: 100%;
+  padding: 10px;
+}
+
+#hdr {
+  flex: 1 1;
+  text-align: center;
+  min-width: 150px;
+  overflow: auto;
+  overflow-wrap: break-word
+}
+#share {
+  flex: 1 1;
+  overflow: hidden;
+  min-width: 150px;
+}
+#url {
+  width: 100%;
+  overflow: auto;
+}
+#grid {
+  width: calc(100vmin - 20px);
+  height: calc(100vmin - 100px);
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(9, 1fr);
+  padding: 0;
+  flex: 0 0 auto;
+}
+
+img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.img-cont {
+  overflow: visible;
+  position: relative;
+}
+.img-cont::before {
+  border-radius: 50%;
+  border: 8px solid transparent;
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.img-cont.sel::before {
+  border-color: red;
+}
+
+/* Overwriting styles: */
+body {
+  flex-flow: column nowrap;
+  align-items: center;
+  background-color: #222;
+}
+img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: grayscale(1) contrast(200%);
+  opacity: 0.7;
+}
+#grid {
+  width: 100%;
+  height: auto;
+  grid-template-columns: repeat(14, 1fr);
+  grid-template-rows: auto;
+}
+
+input, #randomize {
+  margin-top: 15px;
+  font-size: 24px;
+  display: block;
+  width: 500px;
+}
+#randomize {
+  margin-top: 60px;
+}
+</style>
+</head>
+
+<body>
+  <div id="grid">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mario.png" alt="mario">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/luigi.png" alt="luigi">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/peach.png" alt="peach">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/daisy.png" alt="daisy">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/bowser.png" alt="bowser">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/dr_mario.png" alt="dr_mario">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/rosalina_and_luma.png" alt="rosalina_and_luma">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/bowser_jr.png" alt="bowser_jr">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/donkey_kong.png" alt="donkey_kong">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/diddy_kong.png" alt="diddy_kong">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/king_k_rool.png" alt="king_k_rool">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/link.png" alt="link">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/sheik.png" alt="sheik">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/zelda.png" alt="zelda">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/young_link.png" alt="young_link">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ganondorf.png" alt="ganondorf">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/toon_link.png" alt="toon_link">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/samus.png" alt="samus">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/dark_samus.png" alt="dark_samus">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/zero_suit_samus.png" alt="zero_suit_samus">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ridley.png" alt="ridley">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/yoshi.png" alt="yoshi">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/kirby.png" alt="kirby">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/meta_knight.png" alt="meta_knight">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/king_dedede.png" alt="king_dedede">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/fox.png" alt="fox">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/falco.png" alt="falco">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/wolf.png" alt="wolf">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/pikachu.png" alt="pikachu">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/jigglypuff.png" alt="jigglypuff">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/pichu.png" alt="pichu">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mewtwo.png" alt="mewtwo">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/pokemon_trainer.png" alt="pokemon_trainer">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/lucario.png" alt="lucario">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/greninja.png" alt="greninja">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ness.png" alt="ness">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/lucas.png" alt="lucas">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/captain_falcon.png" alt="captain_falcon">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ice_climbers.png" alt="ice_climbers">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/marth.png" alt="marth">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/lucina.png" alt="lucina">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/roy.png" alt="roy">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/chrom.png" alt="chrom">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ike.png" alt="ike">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/robin.png" alt="robin">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/corrin.png" alt="corrin">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mr_game_and_watch.png" alt="mr_game_and_watch">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/pit.png" alt="pit">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/dark_pit.png" alt="dark_pit">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/palutena.png" alt="palutena">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/wario.png" alt="wario">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/snake.png" alt="snake">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/sonic.png" alt="sonic">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/olimar.png" alt="olimar">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/rob.png" alt="rob">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/villager.png" alt="villager">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mega_man.png" alt="mega_man">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/wii_fit_trainer.png" alt="wii_fit_trainer">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/little_mac.png" alt="little_mac">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mii_fighter.png" alt="mii_fighter">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/pac_man.png" alt="pac_man">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/shulk.png" alt="shulk">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/duck_hunt.png" alt="duck_hunt">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ryu.png" alt="ryu">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/cloud.png" alt="cloud">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/bayonetta.png" alt="bayonetta">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/inkling.png" alt="inkling">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/simon.png" alt="simon">
+		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/richter.png" alt="richter">
+    <img src="random_char.png" alt="Random" />
+  </div>
+
+  <button id="randomize">Randomize</button>
+  <input id="bg-color" placeholder="Background color" type='text' />
+  <input id="circle-color" placeholder="Circle color" type='text' />
+
+  <style id="pseudo-style"></style>
+<script>
+const grid = document.getElementById('grid');
+const urlOut = document.getElementById('url');
+const shareButton = document.getElementById('shbtn');
+const active = new Set();
+
+const queryData = {_: []};
+const modifiedQueryData = {_: []};
+function writeQuery() {
+  const loc = window.location;
+  const base = loc.href.replace(loc.search, '');
+  const newQueries = [];
+
+  /* Copy info from the original query data and the data modified in-session: */
+  const totalQueryData = Object.assign({}, queryData, modifiedQueryData);
+  totalQueryData._.push(...queryData._.slice(modifiedQueryData._.length));
+
+  for (const key of Object.keys(totalQueryData).sort()) {
+    if (key === '_') {
+      /* Filter out empty, null, or undefined data: */
+      const keylessData = totalQueryData._.filter(s=>!!s);
+      newQueries.push(...keylessData);
+    } else {
+      newQueries.push(`${key}=${totalQueryData[key]}`);
+    }
+  }
+  if (newQueries.length === 0) return base;
+  const newQueryStr = newQueries.join('&');
+  if (newQueryStr.length === 0) return base;
+  else return `${base}?${newQueryStr}`;
+}
+window.addEventListener('load', (e)=>{
+  const queryStr = window.location.search;
+  if (queryStr) {
+    const queries = queryStr.substr(1).split('&');
+    for (const kv of queries) {
+      const [k, v] = kv.split('=');
+      if (!v) queryData._.push(k);
+      else queryData[k] = v;
+    }
+  }
+  // urlOut.innerHTML = writeQuery();
+
+  /* Execute query string settings: */
+  const querySelection = queryData._[0]
+  if (querySelection) {
+    const shActive = querySelection
+      .split('-')
+      .map(Number);
+    for (const i of shActive) {
+      active.add(i);
+      grid.children[i].classList.add('sel');
+    }
+  }
+  if (queryData.title) {
+    document.getElementById('hdr').firstChild.innerHTML = decodeURI(queryData.title);
+  }
+});
+
+function getAncestorWithParent(descendent, parent) {
+  let ancestor = descendent;
+  let ancParent = ancestor.parentElement;
+  while (ancParent !== parent) {
+    if (ancParent === null) return null;
+    ancestor = ancParent;
+    ancParent = ancestor.parentElement;
+  }
+  return ancestor;
+}
+function getIndexInParent(elem) {
+  let i = 0;
+  for (let s = elem.previousElementSibling; s !== null; s = s.previousElementSibling) ++i;
+  return i;
+}
+
+const sel = (e)=>{
+  let imgC = e.target;
+  while (!imgC.classList.contains('img-cont')) {
+    if (imgC === grid || imgC === null) return;
+    imgC = imgC.parentElement;
+  }
+  const added = imgC.classList.toggle('sel');
+  const index = getIndexInParent(getAncestorWithParent(imgC, grid));
+  if (added) active.add(index);
+  else active.delete(index);
+
+  const activeIndices = Array.from(active.keys());
+  if (activeIndices.length > 0) {
+    modifiedQueryData._[0] = activeIndices.sort((a, b)=>a - b).join('-');
+  } else {
+    modifiedQueryData._[0] = undefined;
+  }
+  // urlOut.innerHTML = writeQuery();
+};
+grid.addEventListener('mousedown', (e)=>{
+  sel(e);
+  if (e.detail > 1) e.preventDefault();
+});
+grid.addEventListener('keypress', (e)=>{
+  if (e.key === 'Enter' || e.key === ' ') sel(e);
+});
+
+
+const canAutoCopy = (
+  document.queryCommandSupported !== undefined &&
+  document.queryCommandSupported('copy')
+);
+let returnTextTimeout;
+if (!canAutoCopy) {
+  copyButton.innerHTML = 'Click and press <kbd>ctrl+c</kbd> to share!';
+}
+// const origText = shareButton.innerHTML;
+// shareButton.addEventListener('click', (e)=>{
+//   const range = document.createRange();
+//   range.selectNodeContents(urlOut);
+//   const selection = window.getSelection();
+//   selection.removeAllRanges();
+//   selection.addRange(range);
+//
+//   if (canAutoCopy) {
+//     document.execCommand('copy');
+//     shareButton.innerText = "Copied!";
+//     if (returnTextTimeout !== undefined) {
+//       window.clearTimeout(returnTextTimeout);
+//     }
+//     returnTextTimeout = window.setTimeout(function() {
+//       shareButton.innerText = origText;
+//     }, 1000);
+//   }
+// }, false);
+
+// const header = document.getElementById('hdr');
+// header.addEventListener('mousedown', (e)=>{
+//   if (e.detail > 1) header.setAttribute('contentEditable', '');
+// });
+// header.addEventListener('input', (e)=>{
+//   modifiedQueryData.title = encodeURI(header.innerText.trim());
+//   urlOut.innerHTML = writeQuery();
+// })
+
+/* Wrap all images and make them tab-navigable: */
+for (let i = 0, len = grid.children.length; i < len; ++i) {
+  const img = grid.children[i]
+  img.tabIndex = '0';
+  const wrapper = document.createElement('div');
+  wrapper.classList.add('img-cont');
+  img.parentNode.insertBefore(wrapper, img.nextSibling);
+  wrapper.appendChild(img);
+}
+
+const randButton = document.getElementById('randomize');
+randButton.addEventListener('click', ()=>{
+  const children = grid.children;
+  const len = children.length;
+  for (let i = 0; i < len; ++i) {
+    const randIndex = Math.floor(Math.random() * (len - i));
+    grid.appendChild(children[randIndex]);
+  }
+});
+
+const bgColor = document.getElementById('bg-color');
+bgColor.addEventListener('input', ()=>{
+  const color = /^[^\n;{}]+/.exec(bgColor.value)[0];
+  document.body.style.background = color;
+});
+
+const circleColor = document.getElementById('circle-color');
+const pseudoStyle = document.getElementById('pseudo-style');
+circleColor.addEventListener('input', ()=>{
+  const color = /^[^\n;{}]+/.exec(circleColor.value)[0];
+  pseudoStyle.innerHTML = `.img-cont.sel::before {border-color: ${color};}`;
+});
+
+</script>
+</body>
+
+</html>
