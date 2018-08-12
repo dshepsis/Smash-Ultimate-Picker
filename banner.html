@@ -63,10 +63,10 @@ img {
   content: "";
   position: absolute;
   z-index: -1;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  top: 2px;
+  bottom: 2px;
+  left: 2px;
+  right: 2px;
 }
 .img-cont.sel::before {
   border-color: red;
@@ -103,7 +103,8 @@ img {
   align-items: center;
   width: 60%;
   padding: 10px;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 #options * {
   font-size: 24px;
