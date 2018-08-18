@@ -27,16 +27,6 @@ body {
 
 #grid-bounds {
   flex: 1 0 auto;
-  overflow: hidden;
-}
-
-/* Center the grid: */
-#grid {
-  left: 0;
-  right: 0;
-  margin: auto;
-  top: 50%;
-  transform: translateY(-50%);
 }
 
 #hdr, #share {
@@ -101,81 +91,100 @@ body {
 #grid {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-  margin: auto;
+  margin: auto; /* Horizontal centering: */
+  left: 0;
+  right: 0;
   position: absolute; /* The grid is manually sized to the grid-bounds with JS */
   transition: width .1s;
 }
 
-.img-cont {
-  overflow: visible;
+.img-btn {
   position: relative;
   padding: 0;
   border: none;
-  padding: none;
 }
 /* I'm a freakin' genius: */
-.img-cont::before {
+/* This creates a sort of mask over each image, which allows the img-btn to be
+ * hovered even when an adjacent expanded image is covering it. */
+.img-btn::before {
   content: "";
   position: absolute;
   top: 0.5px; left: 0.5px; bottom: 0.5px; right: 0.5px;
-  z-index: 2;
+  z-index: 3;
 }
-.img-cont:hover::before {
+.img-btn:hover::before {
   z-index: -1;
 }
 
-.img-cont img {
+.img-btn img {
   width: 100%;
-  height: auto;
   display: block;
-  position: relative;
   filter: grayscale(0.9) brightness(0.5);
-  outline: 4px solid transparent;
-  outline-offset: -5px;
-  will-change: transform;
+  outline: 4px solid rgba(0,0,0,0);
+  outline-offset: -6px;
+  transform: translateZ(0);
+}
+.img-btn.random img {
+  filter: none;
+}
+
+/* The image wrapper expands when hovered over or focused: */
+.img-btn .img-wrap {
+  position: relative;
+  transform: scale(1.01);
   transition: transform .1s, outline-color .1s;
 }
-.img-cont.sel img {
-  outline-color: #c00b;
-  filter: none;
+
+.img-btn:focus {
+  outline: none;
 }
-.img-cont.random img {
-  filter: none;
-}
-#grid.mouse-mode .img-cont:hover img, #grid.tab-mode .img-cont:focus img {
-  transform: scale(3, 3);
+.img-btn:focus .img-wrap {
+  transform: scale(3);
+  box-shadow: 0 0 2px 3px rgba(0, 136, 204, 0.6);
   z-index: 1;
-  filter: none;
 }
-#grid.mouse-mode .img-cont.random:hover img,
-#grid.tab-mode .img-cont.random:focus img {
+/* If another element is being hovered, don't scale the focused element: */
+#grid:hover .img-btn:focus .img-wrap {
+  transform: scale(1.2);
+}
+#grid:hover .img-btn:hover .img-wrap {
+  transform: scale(3);
+  /* Hovered images go over focused ones: */
+  z-index: 2;
+}
+/* Don't scale the random button as much, so it doesn't cover adjacent stages: */
+.img-btn.random:focus .img-wrap,
+#grid:hover .img-btn.random:hover .img-wrap {
   transform: scale(1.5, 1.5);
 }
 
+.img-btn:hover img, .img-btn:focus img {
+  filter: none;
+}
 
 /* Make corners and edges expand into the grid: */
-.img-cont:nth-child(-n+8) img {
+.img-btn:nth-child(-n+8) .img-wrap { /* Top edge */
   transform-origin: top;
 }
-.img-cont:nth-last-child(-n+8) img {
+.img-btn:nth-last-child(-n+8) .img-wrap { /* Bottom edge */
   transform-origin: bottom;
 }
-.img-cont:nth-child(8n+1) img {
+.img-btn:nth-child(8n+1) .img-wrap { /* Left Edge */
   transform-origin: left;
 }
-.img-cont:nth-child(8n+8) img {
+.img-btn:nth-child(8n+8) .img-wrap { /* Right Edge */
   transform-origin: right;
 }
-.img-cont:nth-child(1) img {
+.img-btn:nth-child(1) .img-wrap { /* Top-left corner */
   transform-origin: top left;
 }
-.img-cont:nth-child(8) img {
+.img-btn:nth-child(8) .img-wrap { /* Top-right corner */
   transform-origin: top right;
 }
-.img-cont:nth-last-child(8) img {
+.img-btn:nth-last-child(8) .img-wrap { /* Bottom-left corner */
   transform-origin: bottom left;
 }
-.img-cont:nth-last-child(1) img {
+.img-btn:nth-last-child(1) .img-wrap { /* Bottom-right corner */
   transform-origin: bottom right;
 }
 
@@ -191,11 +200,65 @@ body {
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-start;
-
 }
 #share ul > li:not(:last-child) {
   margin-bottom: 5px;
   margin-right: 3em;
+}
+
+.img-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* Alternate Selected Image Overlays */
+/* So that the overlay icons scale with the grid: */
+#grid * {
+  font-size: inherit;
+}
+.img-btn .img-wrap::after {
+  font-size: 0.06em; /* @magic */
+  content: "";
+  position: absolute;
+  line-height: 0;
+  text-shadow:
+    -1px -1px 0 #000,
+     1px -1px 0 #000,
+    -1px 1px 0 #000,
+     1px 1px 0 #000,
+    -1px 0 0 #000,
+     1px 0 0 #000;
+}
+/* All types of selected image get unfiltered: */
+.img-btn.sel img, .img-btn.ban img, .img-btn.idk img {
+  filter: none;
+}
+/* Each selection type gets a different color outline and text overlay: */
+.img-btn.sel img {
+  outline-color: rgba(0, 160, 70, 0.73);
+}
+.img-btn.sel .img-wrap::after {
+  content: "✓";
+  color: rgb(0, 180, 80);
+  opacity: 0.73;
+}
+.img-btn.ban img {
+  outline-color: rgba(204, 0, 0, 0.73);
+}
+.img-btn.ban .img-wrap::after {
+  content: "✗";
+  color: rgb(180, 30, 30);
+  opacity: 0.73;
+}
+.img-btn.idk img {
+  outline-color: rgba(140, 120, 0, 0.9);
+}
+.img-btn.idk .img-wrap::after {
+  content: "?";
+  color: rgb(240, 240, 30);
+  opacity: 0.8;
 }
 </style>
 </head>
@@ -204,111 +267,111 @@ body {
   <div id="flex-cont">
     <div id="hdr"><h1>Choose your stages!</h1></div>
     <div id="grid-bounds">
-      <div id="grid" class="mouse-mode">
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img1.jpg" alt="Battlefield" title="Battlefield"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img2.jpg" alt="Big Battlefield" title="Big Battlefield"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img3.jpg" alt="Final Destination" title="Final Destination"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img4.jpg" alt="Peach's Castle" title="Peach's Castle"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img5.jpg" alt="Kongo Jungle" title="Kongo Jungle"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img6.jpg" alt="Hyrule Castle" title="Hyrule Castle"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img7.jpg" alt="Super Happy Tree" title="Super Happy Tree"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img8.jpg" alt="Dream Land" title="Dream Land"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img9_en.jpg" alt="Saffron City" title="Saffron City"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img10.jpg" alt="Mushroom Kingdom" title="Mushroom Kingdom"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img11.jpg" alt="Princess Peach's Castle" title="Princess Peach's Castle"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img12.jpg" alt="Rainbow Cruise" title="Rainbow Cruise"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img13.jpg" alt="Kongo Falls" title="Kongo Falls"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img14.jpg" alt="Jungle Japes" title="Jungle Japes"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img15.jpg" alt="Great Bay" title="Great Bay"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img16.jpg" alt="Temple" title="Temple"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img17.jpg" alt="Brinstar" title="Brinstar"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img18.jpg" alt="Yoshi's Island (Melee)" title="Yoshi's Island (Melee)"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img19.jpg" alt="Yoshi's Story" title="Yoshi's Story"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img20.jpg" alt="Fountain of Dreams" title="Fountain of Dreams"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img21.jpg" alt="Green Greens" title="Green Greens"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img22.jpg" alt="Corneria" title="Corneria"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img23.jpg" alt="Venom" title="Venom"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img24.jpg" alt="Pokémon Stadium" title="Pokémon Stadium"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img25.jpg" alt="Onett" title="Onett"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img26.jpg" alt="Mushroom Kingdom II" title="Mushroom Kingdom II"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img27.jpg" alt="Brinstar Depths" title="Brinstar Depths"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img28.jpg" alt="Big Blue" title="Big Blue"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img29.jpg" alt="Fourside" title="Fourside"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img30.jpg" alt="Delfino Plaza" title="Delfino Plaza"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img31.jpg" alt="Mushroomy Kingdom" title="Mushroomy Kingdom"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img32.jpg" alt="Figure-8 Circuit" title="Figure-8 Circuit"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img33.jpg" alt="WarioWare, Inc." title="WarioWare, Inc."/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img34.jpg" alt="Bridge of Eldin" title="Bridge of Eldin"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img35.jpg" alt="Norfair" title="Norfair"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img36.jpg" alt="Frigate Orpheon" title="Frigate Orpheon"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img37.jpg" alt="Yoshi's Island" title="Yoshi's Island"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img38.jpg" alt="Halberd" title="Halberd"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img39.jpg" alt="Lylat Cruise" title="Lylat Cruise"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img40.jpg" alt="Pokémon Stadium 2" title="Pokémon Stadium 2"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img41.jpg" alt="Port Town Aero Dive" title="Port Town Aero Dive"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img42.jpg" alt="Castle Siege" title="Castle Siege"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img43.jpg" alt="Distant Planet" title="Distant Planet"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img44.jpg" alt="Smashville" title="Smashville"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img45.jpg" alt="New Pork City" title="New Pork City"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img46.jpg" alt="Summit" title="Summit"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img47.jpg" alt="Skyworld" title="Skyworld"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img48.jpg" alt="Shadow Moses Island" title="Shadow Moses Island"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img49.jpg" alt="Luigi's Mansion" title="Luigi's Mansion"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img50.jpg" alt="Pirate Ship" title="Pirate Ship"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img51.jpg" alt="Spear Pillar" title="Spear Pillar"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img52.jpg" alt="75 m" title="75 m"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img53.jpg" alt="Mario Bros." title="Mario Bros."/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img54.jpg" alt="Hanenbow" title="Hanenbow"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img55.jpg" alt="Green Hill Zone" title="Green Hill Zone"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img56.jpg" alt="3D Land" title="3D Land"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img57.jpg" alt="Golden Plains" title="Golden Plains"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img58.jpg" alt="Paper Mario" title="Paper Mario"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img59.jpg" alt="Gerudo Valley" title="Gerudo Valley"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img60.jpg" alt="Spirit Train" title="Spirit Train"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img61.jpg" alt="Dream Land GB" title="Dream Land GB"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img62.jpg" alt="Unova Pokémon League" title="Unova Pokémon League"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img63.jpg" alt="Prism Tower" title="Prism Tower"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img64.jpg" alt="Mute City SNES" title="Mute City SNES"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img65.jpg" alt="Magicant" title="Magicant"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img66.jpg" alt="Arena Ferox" title="Arena Ferox"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img67.jpg" alt="Reset Bomb Forest" title="Reset Bomb Forest"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img68.jpg" alt="Tortimer Island" title="Tortimer Island"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img69.jpg" alt="Balloon Fight" title="Balloon Fight"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img70.jpg" alt="Living Room" title="Living Room"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img71.jpg" alt="Find Mii" title="Find Mii"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img72.jpg" alt="Tomodachi Life" title="Tomodachi Life"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img73_en.jpg" alt="PictoChat 2" title="PictoChat 2"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img74.jpg" alt="Mushroom Kingdom U" title="Mushroom Kingdom U"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img75.jpg" alt="Mario Galaxy" title="Mario Galaxy"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img76.jpg" alt="Mario Circuit" title="Mario Circuit"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img77.jpg" alt="Skyloft" title="Skyloft"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img78.jpg" alt="The Great Cave Offensive" title="The Great Cave Offensive"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img79.jpg" alt="Kalos Pokémon League" title="Kalos Pokémon League"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img80.jpg" alt="Coliseum" title="Coliseum"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img81_en.jpg" alt="Flat Zone X" title="Flat Zone X"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img82.jpg" alt="Palutena's Temple" title="Palutena's Temple"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img83.jpg" alt="Gamer" title="Gamer"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img84.jpg" alt="Garden of Hope" title="Garden of Hope"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img85_en.jpg" alt="Town and City" title="Town and City"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img86.jpg" alt="Wii Fit Studio" title="Wii Fit Studio"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img87.jpg" alt="Boxing Ring" title="Boxing Ring"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img88.jpg" alt="Gaur Plain" title="Gaur Plain"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img89.jpg" alt="Duck Hunt" title="Duck Hunt"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img90.jpg" alt="Wrecking Crew" title="Wrecking Crew"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img91.jpg" alt="Pilotwings" title="Pilotwings"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img92.jpg" alt="Wuhu Island" title="Wuhu Island"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img93.jpg" alt="Windy Hill Zone" title="Windy Hill Zone"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img94.jpg" alt="Wily Castle" title="Wily Castle"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img95.jpg" alt="PAC-LAND" title="PAC-LAND"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img96.jpg" alt="Super Mario Maker" title="Super Mario Maker"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img97.jpg" alt="Suzaku Castle" title="Suzaku Castle"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img98.jpg" alt="Midgar" title="Midgar"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img99.jpg" alt="Umbra Clock Tower" title="Umbra Clock Tower"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img100.jpg" alt="New Donk City Hall" title="New Donk City Hall"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img101.jpg" alt="Great Plateau Tower" title="Great Plateau Tower"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img102.jpg" alt="Moray Towers" title="Moray Towers"/></button>
-    		<button class="img-cont"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img103.jpg" alt="Dracula's Castle" title="Dracula's Castle"/></button>
-    		<button class="img-cont random"><img src="random_stage.png" alt="Random" title="Random"/></button>
+      <div id="grid">
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img1.jpg" alt="Battlefield" title="Battlefield"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img2.jpg" alt="Big Battlefield" title="Big Battlefield"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img3.jpg" alt="Final Destination" title="Final Destination"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img4.jpg" alt="Peach's Castle" title="Peach's Castle"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img5.jpg" alt="Kongo Jungle" title="Kongo Jungle"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img6.jpg" alt="Hyrule Castle" title="Hyrule Castle"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img7.jpg" alt="Super Happy Tree" title="Super Happy Tree"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img8.jpg" alt="Dream Land" title="Dream Land"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img9_en.jpg" alt="Saffron City" title="Saffron City"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img10.jpg" alt="Mushroom Kingdom" title="Mushroom Kingdom"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img11.jpg" alt="Princess Peach's Castle" title="Princess Peach's Castle"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img12.jpg" alt="Rainbow Cruise" title="Rainbow Cruise"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img13.jpg" alt="Kongo Falls" title="Kongo Falls"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img14.jpg" alt="Jungle Japes" title="Jungle Japes"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img15.jpg" alt="Great Bay" title="Great Bay"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img16.jpg" alt="Temple" title="Temple"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img17.jpg" alt="Brinstar" title="Brinstar"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img18.jpg" alt="Yoshi's Island (Melee)" title="Yoshi's Island (Melee)"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img19.jpg" alt="Yoshi's Story" title="Yoshi's Story"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img20.jpg" alt="Fountain of Dreams" title="Fountain of Dreams"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img21.jpg" alt="Green Greens" title="Green Greens"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img22.jpg" alt="Corneria" title="Corneria"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img23.jpg" alt="Venom" title="Venom"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img24.jpg" alt="Pokémon Stadium" title="Pokémon Stadium"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img25.jpg" alt="Onett" title="Onett"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img26.jpg" alt="Mushroom Kingdom II" title="Mushroom Kingdom II"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img27.jpg" alt="Brinstar Depths" title="Brinstar Depths"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img28.jpg" alt="Big Blue" title="Big Blue"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img29.jpg" alt="Fourside" title="Fourside"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img30.jpg" alt="Delfino Plaza" title="Delfino Plaza"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img31.jpg" alt="Mushroomy Kingdom" title="Mushroomy Kingdom"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img32.jpg" alt="Figure-8 Circuit" title="Figure-8 Circuit"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img33.jpg" alt="WarioWare, Inc." title="WarioWare, Inc."/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img34.jpg" alt="Bridge of Eldin" title="Bridge of Eldin"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img35.jpg" alt="Norfair" title="Norfair"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img36.jpg" alt="Frigate Orpheon" title="Frigate Orpheon"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img37.jpg" alt="Yoshi's Island" title="Yoshi's Island"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img38.jpg" alt="Halberd" title="Halberd"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img39.jpg" alt="Lylat Cruise" title="Lylat Cruise"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img40.jpg" alt="Pokémon Stadium 2" title="Pokémon Stadium 2"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img41.jpg" alt="Port Town Aero Dive" title="Port Town Aero Dive"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img42.jpg" alt="Castle Siege" title="Castle Siege"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img43.jpg" alt="Distant Planet" title="Distant Planet"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img44.jpg" alt="Smashville" title="Smashville"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img45.jpg" alt="New Pork City" title="New Pork City"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img46.jpg" alt="Summit" title="Summit"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img47.jpg" alt="Skyworld" title="Skyworld"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img48.jpg" alt="Shadow Moses Island" title="Shadow Moses Island"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img49.jpg" alt="Luigi's Mansion" title="Luigi's Mansion"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img50.jpg" alt="Pirate Ship" title="Pirate Ship"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img51.jpg" alt="Spear Pillar" title="Spear Pillar"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img52.jpg" alt="75 m" title="75 m"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img53.jpg" alt="Mario Bros." title="Mario Bros."/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img54.jpg" alt="Hanenbow" title="Hanenbow"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img55.jpg" alt="Green Hill Zone" title="Green Hill Zone"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img56.jpg" alt="3D Land" title="3D Land"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img57.jpg" alt="Golden Plains" title="Golden Plains"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img58.jpg" alt="Paper Mario" title="Paper Mario"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img59.jpg" alt="Gerudo Valley" title="Gerudo Valley"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img60.jpg" alt="Spirit Train" title="Spirit Train"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img61.jpg" alt="Dream Land GB" title="Dream Land GB"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img62.jpg" alt="Unova Pokémon League" title="Unova Pokémon League"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img63.jpg" alt="Prism Tower" title="Prism Tower"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img64.jpg" alt="Mute City SNES" title="Mute City SNES"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img65.jpg" alt="Magicant" title="Magicant"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img66.jpg" alt="Arena Ferox" title="Arena Ferox"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img67.jpg" alt="Reset Bomb Forest" title="Reset Bomb Forest"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img68.jpg" alt="Tortimer Island" title="Tortimer Island"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img69.jpg" alt="Balloon Fight" title="Balloon Fight"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img70.jpg" alt="Living Room" title="Living Room"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img71.jpg" alt="Find Mii" title="Find Mii"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img72.jpg" alt="Tomodachi Life" title="Tomodachi Life"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img73_en.jpg" alt="PictoChat 2" title="PictoChat 2"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img74.jpg" alt="Mushroom Kingdom U" title="Mushroom Kingdom U"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img75.jpg" alt="Mario Galaxy" title="Mario Galaxy"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img76.jpg" alt="Mario Circuit" title="Mario Circuit"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img77.jpg" alt="Skyloft" title="Skyloft"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img78.jpg" alt="The Great Cave Offensive" title="The Great Cave Offensive"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img79.jpg" alt="Kalos Pokémon League" title="Kalos Pokémon League"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img80.jpg" alt="Coliseum" title="Coliseum"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img81_en.jpg" alt="Flat Zone X" title="Flat Zone X"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img82.jpg" alt="Palutena's Temple" title="Palutena's Temple"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img83.jpg" alt="Gamer" title="Gamer"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img84.jpg" alt="Garden of Hope" title="Garden of Hope"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img85_en.jpg" alt="Town and City" title="Town and City"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img86.jpg" alt="Wii Fit Studio" title="Wii Fit Studio"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img87.jpg" alt="Boxing Ring" title="Boxing Ring"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img88.jpg" alt="Gaur Plain" title="Gaur Plain"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img89.jpg" alt="Duck Hunt" title="Duck Hunt"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img90.jpg" alt="Wrecking Crew" title="Wrecking Crew"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img91.jpg" alt="Pilotwings" title="Pilotwings"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img92.jpg" alt="Wuhu Island" title="Wuhu Island"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img93.jpg" alt="Windy Hill Zone" title="Windy Hill Zone"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img94.jpg" alt="Wily Castle" title="Wily Castle"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img95.jpg" alt="PAC-LAND" title="PAC-LAND"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img96.jpg" alt="Super Mario Maker" title="Super Mario Maker"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img97.jpg" alt="Suzaku Castle" title="Suzaku Castle"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img98.jpg" alt="Midgar" title="Midgar"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img99.jpg" alt="Umbra Clock Tower" title="Umbra Clock Tower"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img100.jpg" alt="New Donk City Hall" title="New Donk City Hall"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img101.jpg" alt="Great Plateau Tower" title="Great Plateau Tower"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img102.jpg" alt="Moray Towers" title="Moray Towers"/></div></button>
+    		<button class="img-btn"><div class="img-wrap"><img src="https://www.smashbros.com/assets_v2/img/stage/stage_img103.jpg" alt="Dracula's Castle" title="Dracula's Castle"/></div></button>
+    		<button class="img-btn random"><div class="img-wrap"><img src="random_stage.png" alt="Random" title="Random"/></div></button>
       </div>
     </div>
     <div id="share">
@@ -330,53 +393,65 @@ const header = getId('hdr');
 const grid = getId('grid');
 const urlOut = getId('url');
 const shareButton = getId('shbtn');
-const active = new Set();
 
-const queryData = {_: []};
-const modifiedQueryData = {_: []};
+const KEYLESS = Symbol('Query string options lacking a key.');
+const queryData = {[KEYLESS]: []};
+const modifiedQueryData = {[KEYLESS]: []};
+function substrEndingWith(str, ender) {
+  return str.substring(0, str.indexOf(ender) + ender.length);
+}
 function writeQuery() {
   const loc = window.location;
-  const base = loc.origin + loc.pathname;
+  const base = substrEndingWith(loc.href, loc.pathname);
   const newQueries = [];
 
   /* Copy info from the original query data and the data modified in-session: */
   const totalQueryData = Object.assign({}, queryData, modifiedQueryData);
-  totalQueryData._.push(...queryData._.slice(modifiedQueryData._.length));
+  totalQueryData[KEYLESS].push(
+    ...queryData[KEYLESS].slice(modifiedQueryData[KEYLESS].length)
+  );
 
+  /* Add keyless data first (which doesn't appear in Object.keys because
+   * KEYLESS is a Symbol), filtering out falsey data (e.g. undefined): */
+  const keylessData = totalQueryData[KEYLESS].filter(s=>!!s);
+  newQueries.push(...keylessData);
+
+  /* Handle keyed data similarly */
   for (const key of Object.keys(totalQueryData).sort()) {
-    if (key === '_') {
-      /* Filter out empty, null, or undefined data: */
-      const keylessData = totalQueryData._.filter(s=>!!s);
-      newQueries.push(...keylessData);
-    } else {
-      newQueries.push(`${key}=${totalQueryData[key]}`);
-    }
+    const value = totalQueryData[key];
+    if (value !== undefined) newQueries.push(`${key}=${value}`);
   }
   if (newQueries.length === 0) return base + loc.hash;
   const newQueryStr = newQueries.join('&');
   return `${base}?${newQueryStr}${loc.hash}`;
 }
+
+
+const SELECTION_TYPES = ['sel', 'ban', 'idk'];
+const REVERSE_SELECTION_TYPES = SELECTION_TYPES.slice(0).reverse();
+const SELECTED_STAGES = {};
+for (const selType of SELECTION_TYPES) SELECTED_STAGES[selType] = new Set();
 window.addEventListener('load', (e)=>{
   const queryStr = window.location.search;
   if (queryStr) {
     const queries = queryStr.substr(1).split('&');
     for (const kv of queries) {
       const [k, v] = kv.split('=');
-      if (!v) queryData._.push(k);
+      if (!v) queryData[KEYLESS].push(k);
       else queryData[k] = v;
     }
   }
   urlOut.innerHTML = writeQuery();
 
   /* Execute query string settings: */
-  const querySelection = queryData.sel1;
-  if (querySelection) {
-    const shActive = querySelection
-      .split('-')
-      .map(Number);
-    for (const i of shActive) {
-      active.add(i);
-      grid.children[i].classList.add('sel');
+  for (const selType of SELECTION_TYPES) {
+    const querySelection = queryData[selType];
+    if (querySelection) {
+      const selectedIndices = querySelection.split('-').map(Number);
+      for (const index of selectedIndices) {
+        SELECTED_STAGES[selType].add(index);
+        grid.children[index].classList.add(selType);
+      }
     }
   }
   if (queryData.title) {
@@ -401,7 +476,25 @@ function getIndexInParent(elem) {
   return i;
 }
 
+function cycleClass(ele, cycledClasses) {
+  const currClasses = ele.classList;
+  const currClassSet = new Set(currClasses);
+  let currentClassInCycle = undefined;
+  let inCycle = false;
+  let cycleIndex = 0;
+  for (const len = cycledClasses.length; cycleIndex < len; ++cycleIndex) {
+    currentClassInCycle = cycledClasses[cycleIndex];
+    inCycle = currClassSet.has(currentClassInCycle);
+    if (inCycle) break;
+  }
+  if (inCycle) currClasses.remove(currentClassInCycle);
+  const newClass = cycledClasses[inCycle ? cycleIndex + 1 : 0];
+  if (newClass !== undefined) currClasses.add(newClass);
+  return {added: newClass, removed: currentClassInCycle};
+}
+
 const sel = (e)=>{
+  console.log(e);
   let imgC = e.target;
   while (imgC.parentElement !== grid) {
     if (imgC === grid || imgC === null) return;
@@ -410,40 +503,34 @@ const sel = (e)=>{
   if (imgC.classList.contains('random')) {
     const children = grid.children;
     const randChild = children[Math.floor(Math.random() * children.length)];
-    sel({target: randChild});
+    sel({target: randChild, shiftKey: e.shiftKey});
     return;
   }
-  const added = imgC.classList.toggle('sel');
+  const classCycle = (e.shiftKey) ? REVERSE_SELECTION_TYPES : SELECTION_TYPES;
+  const {added, removed} = cycleClass(imgC, classCycle);
   const index = getIndexInParent(getAncestorWithParent(imgC, grid));
-  if (added) active.add(index);
-  else active.delete(index);
+  if (added) SELECTED_STAGES[added].add(index);
+  if (removed) SELECTED_STAGES[removed].delete(index);
 
   /* Make a query string representing the selected indices in the grid: */
-  const activeIndices = Array.from(active.keys());
-  if (activeIndices.length > 0) {
-    modifiedQueryData.sel1 = activeIndices.sort((a, b)=>a - b).join('-');
-  } else {
-    modifiedQueryData.sel1 = undefined;
+  for (const selType of SELECTION_TYPES) {
+    const selectedIndices = SELECTED_STAGES[selType];
+    if (selectedIndices.size > 0) {
+      const queryVal = Array.from(selectedIndices).sort((a, b)=>a - b).join('-');
+      modifiedQueryData[selType] = queryVal;
+    } else {
+      modifiedQueryData[selType] = undefined;
+    }
   }
   urlOut.innerHTML = writeQuery();
 };
 grid.addEventListener('mousedown', (e)=>{
-  grid.classList.remove('tab-mode');
-  grid.classList.add('mouse-mode');
   sel(e);
   if (e.detail > 1) e.preventDefault();
 });
 grid.addEventListener('keypress', (e)=>{
   if (e.key === 'Enter' || e.key === ' ') sel(e);
-  // if (e.key === 'Arrow')
 });
-document.addEventListener('keydown', (e)=>{
-  if (e.key === 'Tab') {
-    grid.classList.remove('mouse-mode');
-    grid.classList.add('tab-mode');
-  }
-})
-
 
 const canAutoCopy = (
   document.queryCommandSupported !== undefined &&
@@ -518,6 +605,7 @@ function sizeGrid() {
     boundHeight * gridWidthOverHeight,
     boundWidth
   );
+  grid.style.fontSize = `${boundMin}px`;
   grid.style.width = `${boundMin}px`;
 }
 const RAFSizeGrid = ()=>requestAnimationFrame(sizeGrid);
@@ -546,6 +634,43 @@ function throttle(fn, timeBetweenCalls, queue1Call) {
 
 const throttleResize = throttle(RAFSizeGrid, 200, true);
 window.addEventListener('resize', throttleResize);
+
+/* Arrow key navigation: */
+grid.addEventListener('keydown', (e)=>{
+  const activeBtn = getAncestorWithParent(e.target, grid);
+  switch (e.key) {
+    case 'ArrowLeft': {
+      const prevBtn = activeBtn.previousElementSibling;
+      if (prevBtn !== null) prevBtn.focus();
+      break;
+    }
+    case 'ArrowRight': {
+      const nextBtn = activeBtn.nextElementSibling;
+      if (nextBtn !== null) nextBtn.focus();
+      break;
+    }
+    case 'ArrowUp': {
+      let aboveBtn = activeBtn;
+      for (let i = 0; i < gridCols; ++i) {
+        aboveBtn = aboveBtn.previousElementSibling;
+        if (aboveBtn === null) return;
+      }
+      aboveBtn.focus();
+      break;
+    }
+    case 'ArrowDown': {
+      let belowBtn = activeBtn;
+      for (let i = 0; i < gridCols; ++i) {
+        belowBtn = belowBtn.nextElementSibling;
+        if (belowBtn === null) return;
+      }
+      belowBtn.focus();
+      break;
+    }
+    default:
+      return;
+  }
+});
 </script>
 </body>
 
