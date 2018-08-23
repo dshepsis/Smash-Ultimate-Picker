@@ -5,6 +5,9 @@
   <meta charset="UTF-8">
   <link rel="shortcut icon" href="stages.ico" />
   <title>Ultimate Stage Picker</title>
+  
+  <!-- Prevents double-tap to zoom on mobile devices: -->
+  <meta name="viewport" content="width=device-width">
 <style>
 * {
   margin: 0;
@@ -143,7 +146,7 @@ body {
   box-shadow: 0 0 2px 3px rgba(0, 136, 204, 0.6);
   z-index: 1;
 }
-/* If another element is being hovered, don't scale the focused element: */
+/* If another element is being hovered, reduce the scale of the focused element: */
 #grid:hover .img-btn:focus .img-wrap {
   transform: scale(1.2);
 }
@@ -259,6 +262,21 @@ body {
   content: "?";
   color: rgb(240, 240, 30);
   opacity: 0.8;
+}
+
+/* Touch-mode behvaior: */
+#grid.touch-mode .img-btn:hover .img-wrap {
+  transform: scale(1);
+  filter: grayscale(0.9) brightness(0.5);
+  z-index: 1;
+}
+#grid.touch-mode .img-btn:focus .img-wrap {
+  transform: scale(3);
+  filter: none;
+  z-index: 2;
+}
+#grid.touch-mode .img-btn:hover::before {
+  z-index: 3;
 }
 </style>
 </head>
@@ -496,8 +514,8 @@ function cycleClass(ele, cycledClasses) {
 const sel = (e)=>{
   let imgC = e.target;
   while (imgC.parentElement !== grid) {
-    if (imgC === grid || imgC === null) return;
     imgC = imgC.parentElement;
+    if (imgC === grid || imgC === null) return;
   }
   if (imgC.classList.contains('random')) {
     const children = grid.children;
@@ -670,6 +688,28 @@ grid.addEventListener('keydown', (e)=>{
       return;
   }
 });
+
+/* Touch-screen behavior: */
+let currTouchRAF = null;
+grid.addEventListener('touchmove', throttle((e)=>{
+  const touchPoint = e.changedTouches[0];
+  let imgC = document.elementFromPoint(touchPoint.clientX, touchPoint.clientY);
+  if (imgC === null) return;
+  while (imgC.parentElement !== grid) {
+    imgC = imgC.parentElement;
+    if (imgC === grid || imgC === null) return;
+  }
+  if (currTouchRAF !== null) cancelAnimationFrame(currTouchRAF);
+  currTouchRAF = requestAnimationFrame(()=>{
+    imgC.focus();
+    grid.classList.add('touch-mode');
+  });
+}, 50), {passive: true});
+grid.addEventListener('mousemove', throttle(()=>{
+  if (grid.classList.contains('touch-mode')) {
+    grid.classList.remove('touch-mode');
+  }
+}, 100));
 </script>
 </body>
 
