@@ -15,47 +15,26 @@ html {
 }
 body {
   display: flex;
+  flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
   max-height: 100%;
   max-width: 100%;
-  padding: 10px;
-}
-
-#hdr {
-  flex: 1 1;
-  text-align: center;
-  min-width: 150px;
-  overflow: auto;
-  overflow-wrap: break-word
-}
-#share {
-  flex: 1 1;
-  overflow: hidden;
-  min-width: 150px;
-}
-#url {
-  width: 100%;
-  overflow: auto;
-}
-#grid {
-  width: calc(100vmin - 20px);
-  height: calc(100vmin - 100px);
-  display: grid;
-  grid-template-columns: repeat(9, 1fr);
-  grid-template-rows: repeat(9, 1fr);
-  padding: 0;
-  flex: 0 0 auto;
+  background-color: #222;
+  /* overflow: hidden; */
 }
 
 img {
   width: 100%;
   height: auto;
   display: block;
+  filter: grayscale(1) contrast(200%) opacity(0.7);
 }
+
 .img-cont {
   overflow: visible;
   position: relative;
+  width: calc(100% / 16);
 }
 .img-cont::before {
   border-radius: 50%;
@@ -68,31 +47,18 @@ img {
   left: 2px;
   right: 2px;
 }
+
 .img-cont.sel::before {
   border-color: red;
 }
 
-/* Overwriting styles: */
-body {
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  background-color: #222;
-  overflow: hidden;
-  height: 100%;
-}
-img {
-  width: 100%;
-  height: auto;
-  display: block;
-  filter: grayscale(1) contrast(200%) opacity(0.7);
-}
 #grid {
+  flex: 0 0 auto;
   width: 100%;
   height: auto;
-  grid-template-columns: repeat(14, 1fr);
-  grid-template-rows: auto;
-  flex: 0 0 auto;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
 }
 
 #options {
@@ -106,8 +72,20 @@ img {
   overflow-y: auto;
   overflow-x: hidden;
 }
+#options label {
+  display: inline-block;
+  color: #222;
+  background-color: #ddd;
+  padding: 2px;
+  border: 1px solid gray;
+  padding-right: 8px;
+}
+#options input[type="number"] {
+  width: 60px;
+}
 #options * {
   font-size: 24px;
+  font-family: sans-serif;
 }
 #options > * {
   display: block;
@@ -126,76 +104,80 @@ img {
 
 <body>
   <div id="grid">
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mario.png" alt="Mario" title="Mario"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/luigi.png" alt="Luigi" title="Luigi"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/peach.png" alt="Peach" title="Peach"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/daisy.png" alt="Daisy" title="Daisy"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/bowser.png" alt="Bowser" title="Bowser"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/dr_mario.png" alt="Dr. Mario" title="Dr. Mario"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/rosalina_and_luma.png" alt="Rosalina &amp; Luma" title="Rosalina &amp; Luma"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/bowser_jr.png" alt="Bowser Jr." title="Bowser Jr."/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/donkey_kong.png" alt="Donkey Kong" title="Donkey Kong"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/diddy_kong.png" alt="Diddy Kong" title="Diddy Kong"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/king_k_rool.png" alt="King K. Rool" title="King K. Rool"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/link.png" alt="Link" title="Link"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/sheik.png" alt="Sheik" title="Sheik"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/zelda.png" alt="Zelda" title="Zelda"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/young_link.png" alt="Young Link" title="Young Link"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ganondorf.png" alt="Ganondorf" title="Ganondorf"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/toon_link.png" alt="Toon Link" title="Toon Link"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/samus.png" alt="Samus" title="Samus"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/dark_samus.png" alt="Dark Samus" title="Dark Samus"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/zero_suit_samus.png" alt="Zero Suit Samus" title="Zero Suit Samus"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ridley.png" alt="Ridley" title="Ridley"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/yoshi.png" alt="Yoshi" title="Yoshi"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/kirby.png" alt="Kirby" title="Kirby"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/meta_knight.png" alt="Meta Knight" title="Meta Knight"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/king_dedede.png" alt="King Dedede" title="King Dedede"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/fox.png" alt="Fox" title="Fox"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/falco.png" alt="Falco" title="Falco"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/wolf.png" alt="Wolf" title="Wolf"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/pikachu.png" alt="Pikachu" title="Pikachu"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/jigglypuff.png" alt="Jigglypuff" title="Jigglypuff"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/pichu.png" alt="Pichu" title="Pichu"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mewtwo.png" alt="Mewtwo" title="Mewtwo"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/pokemon_trainer.png" alt="Pokémon Trainer" title="Pokémon Trainer"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/lucario.png" alt="Lucario" title="Lucario"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/greninja.png" alt="Greninja" title="Greninja"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ness.png" alt="Ness" title="Ness"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/lucas.png" alt="Lucas" title="Lucas"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/captain_falcon.png" alt="Captain Falcon" title="Captain Falcon"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ice_climbers.png" alt="Ice Climbers" title="Ice Climbers"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/marth.png" alt="Marth" title="Marth"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/lucina.png" alt="Lucina" title="Lucina"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/roy.png" alt="Roy" title="Roy"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/chrom.png" alt="Chrom" title="Chrom"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ike.png" alt="Ike" title="Ike"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/robin.png" alt="Robin" title="Robin"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/corrin.png" alt="Corrin" title="Corrin"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mr_game_and_watch.png" alt="Mr. Game &amp; Watch" title="Mr. Game &amp; Watch"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/pit.png" alt="Pit" title="Pit"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/dark_pit.png" alt="Dark Pit" title="Dark Pit"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/palutena.png" alt="Palutena" title="Palutena"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/wario.png" alt="Wario" title="Wario"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/snake.png" alt="Snake" title="Snake"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/sonic.png" alt="Sonic" title="Sonic"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/olimar.png" alt="Olimar" title="Olimar"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/rob.png" alt="R.O.B." title="R.O.B."/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/villager.png" alt="Villager" title="Villager"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mega_man.png" alt="Mega Man" title="Mega Man"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/wii_fit_trainer.png" alt="Wii Fit Yrainer" title="Wii Fit Yrainer"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/little_mac.png" alt="Little Mac" title="Little Mac"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mii_fighter.png" alt="Mii Fighter" title="Mii Fighter"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/pac_man.png" alt="Pac-Man" title="Pac-Man"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/shulk.png" alt="Shulk" title="Shulk"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/duck_hunt.png" alt="Duck Hunt" title="Duck Hunt"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ryu.png" alt="Ryu" title="Ryu"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/cloud.png" alt="Cloud" title="Cloud"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/bayonetta.png" alt="Bayonetta" title="Bayonetta"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/inkling.png" alt="Inkling" title="Inkling"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/simon.png" alt="Simon" title="Simon"/>
-		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/richter.png" alt="Richter" title="Richter"/>
-    <img src="random_char.png" alt="Random" title="Random"/ />
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mario.png" alt="Mario" title="Mario" data-num="0"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/luigi.png" alt="Luigi" title="Luigi" data-num="1"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/peach.png" alt="Peach" title="Peach" data-num="2"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/daisy.png" alt="Daisy" title="Daisy" data-num="3"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/bowser.png" alt="Bowser" title="Bowser" data-num="4"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/dr_mario.png" alt="Dr. Mario" title="Dr. Mario" data-num="5"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/rosalina_and_luma.png" alt="Rosalina &amp; Luma" title="Rosalina &amp; Luma" data-num="6"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/bowser_jr.png" alt="Bowser Jr." title="Bowser Jr." data-num="7"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/donkey_kong.png" alt="Donkey Kong" title="Donkey Kong" data-num="8"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/diddy_kong.png" alt="Diddy Kong" title="Diddy Kong" data-num="9"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/king_k_rool.png" alt="King K. Rool" title="King K. Rool" data-num="10"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/link.png" alt="Link" title="Link" data-num="11"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/sheik.png" alt="Sheik" title="Sheik" data-num="12"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/zelda.png" alt="Zelda" title="Zelda" data-num="13"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/young_link.png" alt="Young Link" title="Young Link" data-num="14"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ganondorf.png" alt="Ganondorf" title="Ganondorf" data-num="15"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/toon_link.png" alt="Toon Link" title="Toon Link" data-num="16"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/samus.png" alt="Samus" title="Samus" data-num="17"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/dark_samus.png" alt="Dark Samus" title="Dark Samus" data-num="18"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/zero_suit_samus.png" alt="Zero Suit Samus" title="Zero Suit Samus" data-num="19"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ridley.png" alt="Ridley" title="Ridley" data-num="20"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/yoshi.png" alt="Yoshi" title="Yoshi" data-num="21"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/kirby.png" alt="Kirby" title="Kirby" data-num="22"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/meta_knight.png" alt="Meta Knight" title="Meta Knight" data-num="23"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/king_dedede.png" alt="King Dedede" title="King Dedede" data-num="24"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/fox.png" alt="Fox" title="Fox" data-num="25"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/falco.png" alt="Falco" title="Falco" data-num="26"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/wolf.png" alt="Wolf" title="Wolf" data-num="27"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/pikachu.png" alt="Pikachu" title="Pikachu" data-num="28"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/jigglypuff.png" alt="Jigglypuff" title="Jigglypuff" data-num="29"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/pichu.png" alt="Pichu" title="Pichu" data-num="30"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mewtwo.png" alt="Mewtwo" title="Mewtwo" data-num="31"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/pokemon_trainer.png" alt="Pokémon Trainer" title="Pokémon Trainer" data-num="32"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/lucario.png" alt="Lucario" title="Lucario" data-num="33"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/greninja.png" alt="Greninja" title="Greninja" data-num="34"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ness.png" alt="Ness" title="Ness" data-num="35"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/lucas.png" alt="Lucas" title="Lucas" data-num="36"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/captain_falcon.png" alt="Captain Falcon" title="Captain Falcon" data-num="37"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ice_climbers.png" alt="Ice Climbers" title="Ice Climbers" data-num="38"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/marth.png" alt="Marth" title="Marth" data-num="39"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/lucina.png" alt="Lucina" title="Lucina" data-num="40"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/roy.png" alt="Roy" title="Roy" data-num="41"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/chrom.png" alt="Chrom" title="Chrom" data-num="42"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ike.png" alt="Ike" title="Ike" data-num="43"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/robin.png" alt="Robin" title="Robin" data-num="44"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/corrin.png" alt="Corrin" title="Corrin" data-num="45"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mr_game_and_watch.png" alt="Mr. Game &amp; Watch" title="Mr. Game &amp; Watch" data-num="46"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/pit.png" alt="Pit" title="Pit" data-num="47"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/dark_pit.png" alt="Dark Pit" title="Dark Pit" data-num="48"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/palutena.png" alt="Palutena" title="Palutena" data-num="49"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/wario.png" alt="Wario" title="Wario" data-num="50"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/snake.png" alt="Snake" title="Snake" data-num="51"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/sonic.png" alt="Sonic" title="Sonic" data-num="52"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/olimar.png" alt="Olimar" title="Olimar" data-num="53"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/rob.png" alt="R.O.B." title="R.O.B." data-num="54"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/villager.png" alt="Villager" title="Villager" data-num="55"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/shizue.png" alt="Isabelle" title="Isabelle" data-num="69"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mega_man.png" alt="Mega Man" title="Mega Man" data-num="56"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/wii_fit_trainer.png" alt="Wii Fit Yrainer" title="Wii Fit Yrainer" data-num="57"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/little_mac.png" alt="Little Mac" title="Little Mac" data-num="58"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/mii_fighter.png" alt="Mii Fighter" title="Mii Fighter" data-num="59"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/pac_man.png" alt="Pac-Man" title="Pac-Man" data-num="60"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/shulk.png" alt="Shulk" title="Shulk" data-num="61"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/duck_hunt.png" alt="Duck Hunt" title="Duck Hunt" data-num="62"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ryu.png" alt="Ryu" title="Ryu" data-num="63"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/ken.png" alt="Ken" title="Ken" data-num="70"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/cloud.png" alt="Cloud" title="Cloud" data-num="64"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/bayonetta.png" alt="Bayonetta" title="Bayonetta" data-num="65"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/inkling.png" alt="Inkling" title="Inkling" data-num="66"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/simon.png" alt="Simon" title="Simon" data-num="67"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/richter.png" alt="Richter" title="Richter" data-num="68"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/gaogaen.png" alt="Incineroar" title="Incineroar" data-num="71"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/packun_flower.png" alt="Piranha Plant" title="Piranha Plant" data-num="72"/>
+    <img src="random_char.png" alt="Random" title="Random" />
   </div>
 
   <div id="options">
@@ -205,9 +187,8 @@ img {
     <input id="circle-color" placeholder="Circle color" type='text' />
     <input id="image-filter" placeholder="Image filter" type='text' />
     <input id="sel-filter" placeholder="Selected filter" type='text' />
+    <div><label class="opt-label" for="col-count">Column Count</label><input id="col-count" type="number" value="16"></input></div>
   </div>
-
-
 
   <style id="pseudo-style"></style>
 <script>
@@ -302,7 +283,6 @@ const sel = (e)=>{
   } else {
     modifiedQueryData._[0] = undefined;
   }
-  // urlOut.innerHTML = writeQuery();
 };
 grid.addEventListener('mousedown', (e)=>{
   sel(e);
@@ -321,34 +301,6 @@ let returnTextTimeout;
 if (!canAutoCopy) {
   copyButton.innerHTML = 'Click and press <kbd>ctrl+c</kbd> to share!';
 }
-// const origText = shareButton.innerHTML;
-// shareButton.addEventListener('click', (e)=>{
-//   const range = document.createRange();
-//   range.selectNodeContents(urlOut);
-//   const selection = window.getSelection();
-//   selection.removeAllRanges();
-//   selection.addRange(range);
-//
-//   if (canAutoCopy) {
-//     document.execCommand('copy');
-//     shareButton.innerText = "Copied!";
-//     if (returnTextTimeout !== undefined) {
-//       window.clearTimeout(returnTextTimeout);
-//     }
-//     returnTextTimeout = window.setTimeout(function() {
-//       shareButton.innerText = origText;
-//     }, 1000);
-//   }
-// }, false);
-
-// const header = document.getElementById('hdr');
-// header.addEventListener('mousedown', (e)=>{
-//   if (e.detail > 1) header.setAttribute('contentEditable', '');
-// });
-// header.addEventListener('input', (e)=>{
-//   modifiedQueryData.title = encodeURI(header.innerText.trim());
-//   urlOut.innerHTML = writeQuery();
-// })
 
 /* Wrap all images and make them tab-navigable: */
 for (let i = 0, len = grid.children.length; i < len; ++i) {
@@ -417,7 +369,11 @@ selFilter.addEventListener('input', styleOnInput(
   "Selected Filter",
   filter => `.img-cont.sel img {filter: ${filter};}`
 ));
-
+const colCount = document.getElementById('col-count');
+colCount.addEventListener('input', styleOnInput(
+  "Column Count",
+  count => `.img-cont { width: calc(100% / ${count}); }`
+));
 
 </script>
 </body>
