@@ -222,6 +222,7 @@ body {
   font-size: inherit;
 }
 .img-btn .img-wrap::after {
+  pointer-events: none;
   font-size: 0.06em; /* @magic */
   content: "";
   position: absolute;
@@ -542,6 +543,7 @@ const sel = (e)=>{
   urlOut.innerHTML = writeQuery();
 };
 grid.addEventListener('mousedown', (e)=>{
+  if (e.button === 2) return;
   sel(e);
   if (e.detail > 1) e.preventDefault();
 });
