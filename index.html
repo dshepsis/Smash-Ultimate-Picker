@@ -15,6 +15,7 @@ html {
 }
 body {
   display: flex;
+  flex-flow: row wrap;
   justify-content: center;
   align-items: center;
   max-height: 100%;
@@ -40,7 +41,7 @@ body {
 }
 #grid {
   width: calc(100vmin - 20px);
-  height: calc(100vmin - 100px);
+  max-width: calc(100vw - 370px);
   display: grid;
   grid-template-columns: repeat(9, 1fr);
   grid-template-rows: repeat(9, 1fr);
@@ -48,6 +49,11 @@ body {
   padding: 0;
   flex: 0 0 auto;
   margin: 0 10px;
+}
+@media (max-aspect-ratio: 9/10) {
+  #grid {
+    max-width: none;
+  }
 }
 
 img {
@@ -73,10 +79,6 @@ img {
 .img-cont.sel::before {
   border-color: red;
 }
-
-body {
-  flex-flow: row wrap;
-}
 </style>
 </head>
 
@@ -91,6 +93,7 @@ body {
 		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/dr_mario.png" alt="Dr. Mario" title="Dr. Mario" data-num="5"/>
 		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/rosalina_and_luma.png" alt="Rosalina &amp; Luma" title="Rosalina &amp; Luma" data-num="6"/>
 		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/bowser_jr.png" alt="Bowser Jr." title="Bowser Jr." data-num="7"/>
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/packun_flower.png" alt="Piranha Plant" title="Piranha Plant" data-num="72"/>
 		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/donkey_kong.png" alt="Donkey Kong" title="Donkey Kong" data-num="8"/>
 		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/diddy_kong.png" alt="Diddy Kong" title="Diddy Kong" data-num="9"/>
 		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/king_k_rool.png" alt="King K. Rool" title="King K. Rool" data-num="10"/>
@@ -155,9 +158,7 @@ body {
 		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/inkling.png" alt="Inkling" title="Inkling" data-num="66"/>
 		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/simon.png" alt="Simon" title="Simon" data-num="67"/>
 		<img src="https://www.smashbros.com/assets_v2/img/fighter/pict/richter.png" alt="Richter" title="Richter" data-num="68"/>
-    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/packun_flower.png" alt="Piranha Plant" title="Piranha Plant" data-num="72"/>
-    <img src="jack.png" alt="Joker" title="Joker" data-num="73" />
-    <img src="brave.png" alt="Hero" title="Hero" data-num="74" />
+    <img src="https://www.smashbros.com/assets_v2/img/fighter/pict/joker.png" alt="Joker" title="Joker" data-num="73" />
   </div>
   <div id="share"><button id="shbtn">Share</button><pre id="url"></pre></div>
 
